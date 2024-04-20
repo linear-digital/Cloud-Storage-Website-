@@ -24,7 +24,7 @@ const TopNav = () => {
         }
     ]
     return (
-        <nav className='flex justify-between px-7 py-4 bg-gray-100 items-center'>
+        <nav className='flex justify-between px-7 py-4 bg-gray-50 items-center'>
             <section>
                 <Search_Bar />
             </section>

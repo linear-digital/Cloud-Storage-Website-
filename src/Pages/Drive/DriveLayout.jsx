@@ -18,11 +18,13 @@ const DriveLayout = () => {
     //     };
     //   }, []);
     return (
-        <main className="flex h-screen overflow-y-auto w-full">
+        <main className="flex h-screen overflow-hidden w-full">
             <Sidebar />
-            <section className='w-full'>
+            <section className='w-full h-full'>
                 <TopNav />
-                <Outlet />
+                <div className='w-full h-auto overflow-y-auto p-5'>
+                    <Outlet />
+                </div>
             </section>
         </main>
     );
