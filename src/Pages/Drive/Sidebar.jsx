@@ -6,41 +6,92 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Dropdown, Menu } from 'antd';
+import { faUpload } from '@fortawesome/free-solid-svg-icons';
+
+const items = [
+    {
+        label: "Upload File",
+        key: 'file',
+        icon: <FontAwesomeIcon icon={faUpload} width={20} height={20} />,
+    },
+    {
+        label: "Create Folder",
+        key: 'create',
+        icon: <FontAwesomeIcon icon={faPlus} width={20} height={20} />,
+    }
+];
+const links = [
+    {
+        name: "All Files",
+        icon: faFolderOpen
+    },
+    {
+        name: "Shared with me",
+        icon: faUserGroup
+    },
+    {
+        name: "Recent",
+        icon: faClockRotateLeft
+    },
+    {
+        name: "Starred",
+        icon: faStar
+    }
+]
 
 const Sidebar = () => {
-    const links = [
-        {
-            name: "All Files",
-            icon: faFolderOpen
-        },
-        {
-            name: "Shared with me",
-            icon: faUserGroup
-        },
-        {
-            name: "Recent",
-            icon: faClockRotateLeft
-        },
-        {
-            name: "Starred",
-            icon: faStar
+    const createFolder = () => {
+
+    }
+    const uploadFile = () => {
+
+    }
+    const handleClick = (e) => {
+        if (e.key === 'file') {
+            uploadFile()
         }
-    ]
+        else if (e.key === 'create') {
+            createFolder()
+        }
+    }
     return (
         <div className='w-[350px] bg-gray-50 h-full py-9'>
             <div className="flex justify-center">
                 <Logo />
-
             </div>
-            <ul className='mt-10'>
+            <div className="flex justify-start mt-8 pl-10">
+
+                <Dropdown
+                    overlay={
+                        <Menu onClick={handleClick}>
+                            {items.map((item) => (
+                                <Menu.Item icon={item.icon} key={item.key}>{item.label}</Menu.Item>
+                            ))}
+                        </Menu>
+                    }
+                    trigger={['click']}
+                    overlayStyle={{ width: '200px', }}
+
+                >
+                    <a onClick={(e) => e.preventDefault()}>
+                        <button className='btn btn-primary rounded w-[200px]'>
+                            <FontAwesomeIcon icon={faPlus} width={20} height={20} />
+                            <span>Upload</span>
+                        </button>
+                    </a>
+                </Dropdown>
+            </div>
+            <ul className='mt-6'>
                 {
                     links.map((link, index) => (
                         <li key={index} className='pl-10 hover:bg-gray-100 '>
                             <Link to="/drive" className='flex items-center gap-5 font-normal text-[17px] py-3'>
                                 <FontAwesomeIcon icon={link.icon} width={20} height={20} />
-                               <span>
-                               {link.name}
-                               </span>
+                                <span>
+                                    {link.name}
+                                </span>
                             </Link>
                         </li>
                     ))
