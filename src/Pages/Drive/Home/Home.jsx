@@ -1,9 +1,17 @@
 import React from 'react';
+import { icons } from '../../../Components/Icons/IconProvider';
+import CategoryCard from './_Ui/CategoryCard';
 
 const Home = () => {
     return (
-        <div>
-            {/* <h1 className='text-3xl'>This is Home of drive</h1> */}
+        <div className='flex gap-7 flex-wrap px-5'>
+            {
+                icons.map((icon, index) => {
+                    return (
+                        <CategoryCard key={index} icon={icon} />
+                    )
+                })
+            }
         </div>
     );
 };

@@ -14,6 +14,13 @@ import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faFile } from '@fortawesome/free-regular-svg-icons';
+import { faFolder } from '@fortawesome/free-regular-svg-icons';
+import { faCircleNodes } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { faGear } from '@fortawesome/free-solid-svg-icons';
+import { faFileZipper } from '@fortawesome/free-regular-svg-icons';
 
 const items = [
     {
@@ -29,31 +36,38 @@ const items = [
 ];
 const links = [
     {
-        name: "All Files",
-        icon: faFolderOpen,
-        children: [
-            {
-                name: "Images",
-                icon: faImage
-            },
-            {
-                name: "Documents",
-                icon: faFolderClosed
-            }
-        ]
+        name: "Home",
+        icon: faHome
     },
     {
-        name: "Shared with me",
-        icon: faUserGroup
-    },
-    {
-        name: "Recent",
-        icon: faClockRotateLeft
+        name: "Files",
+        icon: faFile
     },
     {
         name: "Starred",
         icon: faStar
+    },
+    {
+        name: "Shared",
+        icon: faCircleNodes
+    },
+    {
+        name: "Recent",
+        icon: faFolder
+    },
+    {
+        name: "Recovery",
+        icon: faTrashCan
+    },
+    {
+        name: "Settings",
+        icon: faGear
+    },
+    {
+        name: "Zip Files",
+        icon: faFileZipper
     }
+
 ]
 
 const Sidebar = () => {
@@ -73,50 +87,27 @@ const Sidebar = () => {
     }
     const [open, setOpen] = useState('')
     return (
-        <div className='w-[350px] bg-gray-50 h-full py-9'>
-            <div className="flex justify-center">
-                <Logo />
-            </div>
-            <div className="flex justify-start mt-8 pl-10">
-
-                <Dropdown
-                    overlay={
-                        <Menu onClick={handleClick}>
-                            {items.map((item) => (
-                                <Menu.Item icon={item.icon} key={item.key}>{item.label}</Menu.Item>
-                            ))}
-                        </Menu>
-                    }
-                    trigger={['click']}
-                    overlayStyle={{ width: '200px', }}
-
-                >
-                    <a onClick={(e) => e.preventDefault()}>
-                        <button className='btn btn-primary rounded w-[200px]'>
-                            <FontAwesomeIcon icon={faPlus} width={20} height={20} />
-                            <span>Upload</span>
-                        </button>
-                    </a>
-                </Dropdown>
-            </div>
-            <ul className='mt-6'>
+        <div className='w-[350px] bg-white h-full overflow-y-auto py-5 rounded'>
+            
+            
+            <ul className=''>
                 {
                     links.map((link, index) => (
                         <li key={index} className=''>
-                            <div className='flex items-center pr-5'>
-                                <Link to="/drive" className='flex items-center gap-5 font-normal text-[17px] py-3 hover:bg-gray-100 w-full pl-10'>
+                            <div className='flex items-center'>
+                                <Link to="/drive" className='flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-[#F2F0FF] font-semibold w-full pl-8  text-blue-gray-700 hover:text-blue-900'>
                                     <FontAwesomeIcon icon={link.icon} width={20} height={20} />
                                     <span>
                                         {link.name}
                                     </span>
                                 </Link>
                                 {
-                                    link.children && <button className='pl-4'
-                                    onClick={() => setOpen(open === index ? '' : index)}
+                                    link.children && <button className='pl-4 pr-5'
+                                        onClick={() => setOpen(open === index ? '' : index)}
                                     >
-                                       {
-                                           open === index ? <FontAwesomeIcon icon={faChevronUp} width={20} height={20} /> : <FontAwesomeIcon icon={faChevronDown} width={20} height={20} />
-                                       }
+                                        {
+                                            open === index ? <FontAwesomeIcon icon={faChevronUp} width={20} height={20} /> : <FontAwesomeIcon icon={faChevronDown} width={20} height={20} />
+                                        }
                                     </button>
                                 }
                             </div>
@@ -142,6 +133,12 @@ const Sidebar = () => {
                         </li>
                     ))
                 }
+                <li className='ml-8 mt-5'>
+                    <button className='btn btn-primary rounded w-[200px]'>
+                        <FontAwesomeIcon icon={faPlus} width={20} height={20} />
+                        <span>Upload</span>
+                    </button>
+                </li>
             </ul>
         </div>
     );
