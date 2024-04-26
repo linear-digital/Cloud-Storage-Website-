@@ -1,16 +1,16 @@
 import React from 'react';
-import Logo from '../../Components/Global/Logo/Logo';
-import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+// import Logo from '../../Components/Global/Logo/Logo';
+// import { faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
+// import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
-import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
+// import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Dropdown, Menu } from 'antd';
+// import { Dropdown, Menu } from 'antd';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { faFolderClosed } from '@fortawesome/free-regular-svg-icons';
-import { faImage } from '@fortawesome/free-regular-svg-icons';
+// import { faFolderClosed } from '@fortawesome/free-regular-svg-icons';
+// import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -95,7 +95,7 @@ const Sidebar = () => {
                     links.map((link, index) => (
                         <li key={index} className=''>
                             <div className='flex items-center'>
-                                <Link to="/drive" className='flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-[#F2F0FF] font-semibold w-full pl-8  text-blue-gray-700 hover:text-blue-900'>
+                                <Link to="/drive" className='flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-black font-semibold w-full pl-8  text-blue-gray-700 hover:text-white'>
                                     <FontAwesomeIcon icon={link.icon} width={20} height={20} />
                                     <span>
                                         {link.name}

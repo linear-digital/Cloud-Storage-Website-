@@ -26,7 +26,7 @@ module.exports = withMT({
       {
         mytheme: {
 
-          "primary": "#3C337D",
+          "primary": "#F7931E",
 
           "secondary": "#E72D7A",
 

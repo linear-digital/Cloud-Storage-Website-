@@ -11,5 +11,10 @@
 
 .btn-primary {
     color: whitesmoke;
-    /* background-size: contain; */
+}
+
+.btn-primary:hover {
+    color: whitesmoke;
+    background-color: black;
+    border: 1px black;
 }
