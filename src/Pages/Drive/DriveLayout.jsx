@@ -31,9 +31,11 @@ const DriveLayout = () => {
                             Create New Folder
                         </button>
                     </div>
-                    <div className="flex h-full">
+                    <div className="flex h-full w-full">
                         <Sidebar />
-                        <Outlet />
+                        <div className="w-full">
+                            <Outlet />
+                        </div>
                     </div>
                 </div>
             </section>

@@ -18,3 +18,9 @@
     background-color: black;
     border: 1px black;
 }
+.dot{
+    width: 5px;
+    height: 5px;
+    background-color: rgb(57, 57, 57);
+    border-radius: 50%;
+}

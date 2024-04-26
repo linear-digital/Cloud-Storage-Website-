@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import {
     Card,
     Input,
@@ -10,13 +12,23 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
 import { useState } from "react";
-
+import Cookie from 'js-cookie';
+import { api } from '../../Components/axios/api';
+import { toast } from 'react-hot-toast';
 export default function Login() {
-    const formHandler = (e) => {
+    const navigate = useNavigate();
+    const formHandler =async (e) => {
         e.preventDefault();
         const target = new FormData(e.target);
         const data = Object.fromEntries(target.entries())
-        console.log(data)
+        try {
+            const res = await api.post('/user/login', data)
+            Cookie.set('authToken', res.data.token)
+            toast.success('Login Successfully')
+            navigate('/drive')
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+        }
     }
     const [show, setShow] = useState(false)
     return (
@@ -79,7 +91,7 @@ export default function Login() {
                         containerProps={{ className: "-ml-2.5" }}
                     />
                     <Button type="submit" className="mt-6" fullWidth>
-                        sign up
+                        Login
                     </Button>
 
                 </form>

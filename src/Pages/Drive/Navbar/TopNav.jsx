@@ -8,7 +8,9 @@ import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
+
 const TopNav = () => {
+
     const links = [
         {
             name: "My Files",
@@ -58,6 +60,12 @@ const TopNav = () => {
                                 )
                             })
                         }
+                        <li>
+                            <Link className="justify-start gap-3 items-center text-base flex" to={'/'}>
+                                <FontAwesomeIcon icon={link.icon} width={20} height={20} />
+                                {link.name}
+                            </Link>
+                        </li>
                     </ul>
                 </div>
             </section>

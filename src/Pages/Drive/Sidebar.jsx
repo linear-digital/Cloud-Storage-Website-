@@ -22,22 +22,13 @@ import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { faFileZipper } from '@fortawesome/free-regular-svg-icons';
 
-const items = [
-    {
-        label: "Upload File",
-        key: 'file',
-        icon: <FontAwesomeIcon icon={faUpload} width={20} height={20} />,
-    },
-    {
-        label: "Create Folder",
-        key: 'create',
-        icon: <FontAwesomeIcon icon={faPlus} width={20} height={20} />,
-    }
-];
+
+
 const links = [
     {
         name: "Home",
-        icon: faHome
+        icon: faHome,
+        path: "/drive"
     },
     {
         name: "Files",
@@ -71,6 +62,9 @@ const links = [
 ]
 
 const Sidebar = () => {
+
+    const [active, setActive] = useState("/drive");
+
     const createFolder = () => {
 
     }
@@ -95,7 +89,7 @@ const Sidebar = () => {
                     links.map((link, index) => (
                         <li key={index} className=''>
                             <div className='flex items-center'>
-                                <Link to="/drive" className='flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-black font-semibold w-full pl-8  text-blue-gray-700 hover:text-white'>
+                                <Link to="/drive" className={`flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-black font-semibold w-full pl-8  text-blue-gray-700 hover:text-white ${active === link.path ? 'bg-black text-white shadow' : ''}`}>
                                     <FontAwesomeIcon icon={link.icon} width={20} height={20} />
                                     <span>
                                         {link.name}
