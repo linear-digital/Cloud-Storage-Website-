@@ -21,6 +21,9 @@ import { faCircleNodes } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { faFileZipper } from '@fortawesome/free-regular-svg-icons';
+import { faDatabase } from '@fortawesome/free-solid-svg-icons';
+import { Progress } from '@material-tailwind/react';
+import { useSelector } from 'react-redux';
 
 
 
@@ -62,28 +65,17 @@ const links = [
 ]
 
 const Sidebar = () => {
-
+    const { user } = useSelector((state) => state.user)
     const [active, setActive] = useState("/drive");
 
-    const createFolder = () => {
-
-    }
-    const uploadFile = () => {
-
-    }
-    const handleClick = (e) => {
-        if (e.key === 'file') {
-            uploadFile()
-        }
-        else if (e.key === 'create') {
-            createFolder()
-        }
-    }
     const [open, setOpen] = useState('')
+    const upgrade = () => {
+
+    }
     return (
         <div className='w-[350px] bg-white h-full overflow-y-auto py-5 rounded'>
-            
-            
+
+
             <ul className=''>
                 {
                     links.map((link, index) => (
@@ -134,6 +126,27 @@ const Sidebar = () => {
                     </button>
                 </li>
             </ul>
+            <div className='pl-8 mt-5 pr-5'>
+                <div className="flex justify-between">
+                    <div className="flex items-center gap-1">
+                        <FontAwesomeIcon icon={faDatabase} width={20}
+                            className='text-primary'
+                        />
+                        <h5 className='text-[13px] font-semibold '>
+                            Storage
+                        </h5>
+                    </div>
+                    <button className='btn btn-link text-primary'>
+                        Upgrade
+                    </button>
+                </div>
+                <Progress value={user?.storage || 100} max={user?.storageMax || 100} size="sm"
+                    color="green"
+                />
+                <h5 className='mt-3 text-sm'>
+                    {user?.storage || 100} GB of {user?.storageMax || 100} GB used
+                </h5>
+            </div>
         </div>
     );
 };

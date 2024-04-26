@@ -7,6 +7,7 @@ import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { logOut } from '../../../helper/auth';
 
 
 const TopNav = () => {
@@ -20,10 +21,6 @@ const TopNav = () => {
             name: "Account Settings",
             icon: faGear,
         },
-        {
-            name: "Logout",
-            icon: faRightFromBracket
-        }
     ]
     return (
         <nav className='flex justify-between px-7 py-3 bg-white items-center'>
@@ -61,10 +58,14 @@ const TopNav = () => {
                             })
                         }
                         <li>
-                            <Link className="justify-start gap-3 items-center text-base flex" to={'/'}>
-                                <FontAwesomeIcon icon={link.icon} width={20} height={20} />
-                                {link.name}
-                            </Link>
+                            <button 
+                            onClick={(e) => {
+                                logOut()
+                            }}
+                            className="justify-start gap-3 items-center text-base flex" >
+                                <FontAwesomeIcon icon={faRightFromBracket} width={20} height={20} />
+                                {"Logout"}
+                            </button>
                         </li>
                     </ul>
                 </div>
