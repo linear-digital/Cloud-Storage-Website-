@@ -22,7 +22,7 @@ export default function Login() {
         const target = new FormData(e.target);
         const data = Object.fromEntries(target.entries())
         try {
-            const res = await api.post('/user/login', data)
+            const res = await api.post('/user/login', {...data, provider: "password"})
             Cookie.set('authToken', res.data.token)
             toast.success('Login Successfully')
             navigate('/drive')

@@ -2,6 +2,7 @@ import React from 'react';
 import { icons } from '../../../Components/Icons/IconProvider';
 import CategoryCard from './_Ui/CategoryCard';
 import RecentFolders from './_SUB/RecentFolders';
+import Files from './_SUB/Files';
 
 const Home = () => {
     return (
@@ -17,6 +18,7 @@ const Home = () => {
             </section>
 
             <RecentFolders />
+            <Files />
         </div>
     );
 };

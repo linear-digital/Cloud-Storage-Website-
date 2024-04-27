@@ -24,6 +24,7 @@ import { faFileZipper } from '@fortawesome/free-regular-svg-icons';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons';
 import { Progress } from '@material-tailwind/react';
 import { useSelector } from 'react-redux';
+import { UploadDialog } from '../../Components/Dialog/UploadDialog';
 
 
 
@@ -72,10 +73,11 @@ const Sidebar = () => {
     const upgrade = () => {
 
     }
+    const [openUpload, setOpenUpload] = useState(false)
     return (
         <div className='w-[350px] bg-white h-full overflow-y-auto py-5 rounded'>
 
-
+            <UploadDialog open={openUpload} setOpen={setOpenUpload} />
             <ul className=''>
                 {
                     links.map((link, index) => (
@@ -120,7 +122,9 @@ const Sidebar = () => {
                     ))
                 }
                 <li className='ml-8 mt-5'>
-                    <button className='btn btn-primary rounded w-[200px]'>
+                    <button
+                        onClick={() => setOpenUpload(true)}
+                        className='btn btn-primary rounded w-[200px]'>
                         <FontAwesomeIcon icon={faPlus} width={20} height={20} />
                         <span>Upload</span>
                     </button>
