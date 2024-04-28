@@ -12,7 +12,6 @@ import Cookie from 'js-cookie';
 const { Dragger } = Upload;
 export function UploadDialog({ open, setOpen }) {
     const token = Cookie.get('authToken')
-    const [percent, setPercent] = React.useState(0);
     const { user } = useSelector((state) => state.user)
     const handleOpen = () => setOpen(!open);
     const props = {
@@ -25,11 +24,11 @@ export function UploadDialog({ open, setOpen }) {
         },
         onChange(info) {
             if (info.file.status !== 'uploading') {
-                setPercent(0);
+                // setPercent(0);
             }
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`);
-                setPercent(100);
+                // setPercent(100);
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
             }

@@ -18,7 +18,7 @@ const DriveLayout = () => {
     //     };
     //   }, []);
     return (
-        <main className="flex h-screen overflow-hidden w-full bg-[#EAEDF2]">
+        <main className="flex h-screen overflow-y-auto w-full bg-[#EAEDF2]">
 
             <section className='w-full h-full'>
                 <TopNav />
@@ -31,9 +31,9 @@ const DriveLayout = () => {
                             Create New Folder
                         </button>
                     </div>
-                    <div className="flex h-full w-full">
+                    <div className="flex h-screen w-full">
                         <Sidebar />
-                        <div className="w-full">
+                        <div className="w-full overflow-y-auto">
                             <Outlet />
                         </div>
                     </div>

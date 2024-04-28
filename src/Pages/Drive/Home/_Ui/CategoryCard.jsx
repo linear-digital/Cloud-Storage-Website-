@@ -8,7 +8,7 @@ const CategoryCard = ({ icon, }) => {
     return (
         <div >
             <div
-                className='flex items-center justify-center p-5 h-[150px] w-[220px] rounded-lg shadow shadow-gray-300 relative'
+                className='flex items-center justify-center p-5 h-[120px] w-[200px] rounded-lg shadow shadow-gray-300 relative'
                 style={{
                     backgroundColor: icon.bg || "white"
                 }}

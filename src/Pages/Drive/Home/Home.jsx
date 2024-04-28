@@ -3,10 +3,12 @@ import { icons } from '../../../Components/Icons/IconProvider';
 import CategoryCard from './_Ui/CategoryCard';
 import RecentFolders from './_SUB/RecentFolders';
 import Files from './_SUB/Files';
+import { FilesTable } from './_SUB/FilesTable';
+
 
 const Home = () => {
     return (
-        <div className=' px-5'>
+        <div className='px-5'>
             <section className='flex gap-7 flex-wrap'>
                 {
                     icons.map((icon, index) => {
@@ -19,6 +21,7 @@ const Home = () => {
 
             <RecentFolders />
             <Files />
+            <FilesTable /> 
         </div>
     );
 };
