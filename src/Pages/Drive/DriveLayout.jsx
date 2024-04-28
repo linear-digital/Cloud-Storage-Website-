@@ -18,11 +18,11 @@ const DriveLayout = () => {
     //     };
     //   }, []);
     return (
-        <main className="flex h-screen overflow-y-auto w-full bg-[#EAEDF2]">
+        <main className="flex  w-full bg-[#EAEDF2]">
 
-            <section className='w-full h-full'>
+            <section className='w-full'>
                 <TopNav />
-                <div className='w-full h-full overflow-hidden p-5'>
+                <div className='w-full p-5'>
                     <div className="flex justify-between">
                         <h1 className='text-[20px] font-semibold pb-5 pl-2'>
                             File Manager
@@ -31,9 +31,9 @@ const DriveLayout = () => {
                             Create New Folder
                         </button>
                     </div>
-                    <div className="flex h-screen w-full">
+                    <div className="flex w-full h-screen overflow-hidden">
                         <Sidebar />
-                        <div className="w-full overflow-y-auto">
+                        <div className="w-full h-full overflow-y-auto">
                             <Outlet />
                         </div>
                     </div>
