@@ -24,3 +24,7 @@
     background-color: rgb(57, 57, 57);
     border-radius: 50%;
 }
+
+::-webkit-scrollbar {
+    display: none;
+}

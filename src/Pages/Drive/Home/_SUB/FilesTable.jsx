@@ -52,17 +52,18 @@ export function FilesTable() {
     });
 
     const selectAll = () => {
-        if (selected.length === TABLE_ROWS.length) {
+        if (selected.length === files.length) {
             setSelected([]);
         } else {
-            setSelected(TABLE_ROWS);
+            setSelected(files);
         }
     }
-    const selectOne = (index) => {
-        if (selected.filter((item) => item === index).length > 0) {
-
-        } else {
-            setSelected([...selected, index]);
+    const selectOne = (file) => {
+        if (selected.filter((item) => item?._id === file?._id).length > 0) {
+            setSelected(selected.filter((item) => item?._id !== file?._id));
+        }
+        else {
+            setSelected([...selected, file]);
         }
     }
     const deleteFile = async (id) => {
@@ -83,7 +84,7 @@ export function FilesTable() {
                 <thead>
                     <tr>
                         <th className="border-b border-blue-gray-100 bg-white p-4">
-                            <Checkbox checked={selected.length === TABLE_ROWS.length} onChange={selectAll} />
+                            <Checkbox checked={selected.length === files.length} onChange={selectAll} />
                         </th>
                         {TABLE_HEAD.map((head) => (
                             <th key={head} className="border-b border-blue-gray-100 bg-white p-4">
@@ -102,7 +103,11 @@ export function FilesTable() {
                     {files.map((file, index) => (
                         <tr key={file?._id} className="even:bg-blue-gray-50/50">
                             <td className="p-4">
-                                <Checkbox />
+                                <Checkbox checked={
+                                    selected.filter((item) => item?._id === file?._id).length > 0
+                                }
+                                    onChange={() => selectOne(file)}
+                                />
                             </td>
                             <td className="p-4">
                                 <Typography variant="small" color="blue-gray" className="font-normal">
