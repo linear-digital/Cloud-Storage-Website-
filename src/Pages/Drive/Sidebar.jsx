@@ -144,11 +144,11 @@ const Sidebar = () => {
                         Upgrade
                     </button>
                 </div>
-                <Progress value={user?.storage || 100} max={user?.storageMax || 100} size="sm"
+                <Progress value={user?.storage || 100} max={(user?.storageMax || 100) / 1024} size="sm"
                     color="green"
                 />
                 <h5 className='mt-3 text-sm'>
-                    {user?.storage || 100} GB of {user?.storageMax || 100} GB used
+                    {((user?.storage ) / 1024).toFixed(2)} GB of {((user?.storageMax) / 1024)} GB used
                 </h5>
             </div>
         </div>

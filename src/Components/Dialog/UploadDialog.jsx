@@ -9,8 +9,11 @@ import { InboxOutlined } from '@ant-design/icons';
 import { Button, message, Upload } from 'antd';
 import { useSelector } from "react-redux";
 import Cookie from 'js-cookie';
+import { useDispatch } from "react-redux";
+import { setReloadFiles } from "../../redux/Slice/reloadSlice";
 const { Dragger } = Upload;
 export function UploadDialog({ open, setOpen }) {
+    const dispatch = useDispatch()
     const token = Cookie.get('authToken')
     const { user } = useSelector((state) => state.user)
     const handleOpen = () => setOpen(!open);
@@ -29,6 +32,7 @@ export function UploadDialog({ open, setOpen }) {
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`);
                 // setPercent(100);
+                dispatch(setReloadFiles(info.file))
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
             }
