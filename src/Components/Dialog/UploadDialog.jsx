@@ -10,7 +10,7 @@ import { Button, message, Upload } from 'antd';
 import { useSelector } from "react-redux";
 import Cookie from 'js-cookie';
 import { useDispatch } from "react-redux";
-import { setReloadFiles } from "../../redux/Slice/reloadSlice";
+import { setReloadFiles, setReloadUser } from "../../redux/Slice/reloadSlice";
 const { Dragger } = Upload;
 export function UploadDialog({ open, setOpen }) {
     const dispatch = useDispatch()
@@ -33,6 +33,7 @@ export function UploadDialog({ open, setOpen }) {
                 message.success(`${info.file.name} file uploaded successfully`);
                 // setPercent(100);
                 dispatch(setReloadFiles(info.file))
+                dispatch(setReloadUser(info.file))
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
             }

@@ -6,12 +6,14 @@ import { api } from './axios/api';
 import { setUser } from '../redux/Slice/userSlice';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 
 const DefaultFetch = () => {
     const token = Cookie.get('authToken')
     const [number, setNumber] = useState(0)
     const dispatch = useDispatch()
+    const { reloadUser } = useSelector((state) => state.reload)
     useEffect(() => {
         if (token) {
             (async () => {
@@ -23,7 +25,7 @@ const DefaultFetch = () => {
                 }
             })()
         }
-    }, [token, number])
+    }, [token, number, reloadUser])
     // increase number every 5 seconds
     useEffect(() => {
         const interval = setInterval(() => {

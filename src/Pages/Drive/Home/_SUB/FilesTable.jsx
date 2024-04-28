@@ -11,6 +11,8 @@ import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { filesize } from "../../../../helper/fileSize";
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setReloadUser } from "../../../../redux/Slice/reloadSlice";
 const TABLE_ROWS = [
     {
         name: "John Michael",
@@ -50,7 +52,7 @@ export function FilesTable() {
             return data;
         },
     });
-
+    const dispatch = useDispatch()
     const selectAll = () => {
         if (selected.length === files.length) {
             setSelected([]);
@@ -68,8 +70,9 @@ export function FilesTable() {
     }
     const deleteFile = async (id) => {
         try {
-            await api.delete(`/file/${id}`)
+            const res = await api.delete(`/file/${id}`)
             toast.success("File deleted successfully")
+            dispatch(setReloadUser(res))
             refetch()
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
