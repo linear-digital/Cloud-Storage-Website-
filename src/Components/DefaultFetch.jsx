@@ -18,8 +18,13 @@ const DefaultFetch = () => {
         if (token) {
             (async () => {
                 try {
-                    const user = await api.get('/user/me')
-                    dispatch(setUser(user.data || null))
+                    if (token) {
+                        const user = await api.get('/user/me')
+                        dispatch(setUser(user.data || null))
+                    }
+                    else {
+                        dispatch(setUser(undefined))
+                    }
                 } catch (error) {
                     console.error(error)
                 }

@@ -6,6 +6,7 @@ import Home from '../Pages/Drive/Home/Home'
 import Login from '../Pages/Auth/Login'
 import Signup from '../Pages/Auth/Signup'
 import Files from '../Pages/Drive/Files/Files'
+import AuthChecker from '../helper/authChecker'
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'drive',
-        element: <DriveLayout />,
+        element: <AuthChecker> <DriveLayout /></AuthChecker>,
         children: [
           {
             index: true,
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
           {
             path: 'files',
             element: <Files />
+          },
+          {
+            path: 'recovery',
+            element: <Files mode={"recovery"} />
           }
         ]
       },

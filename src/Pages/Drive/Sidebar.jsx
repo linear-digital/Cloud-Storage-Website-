@@ -42,27 +42,33 @@ const links = [
     },
     {
         name: "Starred",
-        icon: faStar
+        icon: faStar,
+        path: "/drive/files?type=starred"
     },
     {
         name: "Shared",
-        icon: faCircleNodes
+        icon: faCircleNodes,
+        path: "/drive/files?type=shared"
     },
     {
         name: "Recent",
-        icon: faFolder
+        icon: faFolder,
+        path: "/drive/files?type=recent"
     },
     {
         name: "Recovery",
-        icon: faTrashCan
+        icon: faTrashCan,
+        path: "/drive/recovery"
     },
     {
         name: "Settings",
-        icon: faGear
+        icon: faGear,
+        // path: "/drive/settings"
     },
     {
         name: "Zip Files",
-        icon: faFileZipper
+        icon: faFileZipper,
+        path: "/drive/files?category=application/zip"
     }
 
 ]
@@ -149,7 +155,7 @@ const Sidebar = () => {
                     color="green"
                 />
                 <h5 className='mt-3 text-sm'>
-                    {((user?.storage ) / 1024).toFixed(2)} GB of {((user?.storageMax) / 1024)} GB used
+                    {((user?.storage) / 1024).toFixed(2)} GB of {((user?.storageMax) / 1024)} GB used
                 </h5>
             </div>
         </div>

@@ -9,16 +9,28 @@ import { useDispatch } from 'react-redux';
 import { setReloadUser } from '../../../redux/Slice/reloadSlice';
 import Loader from '../../../Components/Loader';
 
-const FileCard = ({ data }) => {
+const FileCard = ({ data, refetch, mode, index }) => {
     const dispatch = useDispatch()
     const [loading, setLoading] = React.useState(false)
     const deleteFile = async (id) => {
         try {
             setLoading(true)
+            const res = await api.post(`/file/bin/${id}`)
+            setLoading(false)
+            toast.success("File deleted successfully")
+            refetch()
+        } catch (error) {
+            setLoading(false)
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+        }
+    }
+    const deletePermanently = async (id) => {
+        try {
+            setLoading(true)
             const res = await api.delete(`/file/${id}`)
             setLoading(false)
             toast.success("File deleted successfully")
-            dispatch(setReloadUser(res))
+            refetch()
         } catch (error) {
             setLoading(false)
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
@@ -33,20 +45,34 @@ const FileCard = ({ data }) => {
                 <p className='text-xs'>
                     {data?.filename.slice(0, 8) + "...." + data?.extension}
                 </p>
-                <div className="dropdown dropdown-end">
+                <div className={`dropdown ${index !== 0 && "dropdown-end"}`}>
                     <button tabIndex={0} role="button">
                         <FontAwesomeIcon icon={faEllipsisV} width={20} />
                     </button>
-                    <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                        <li>
-                            <button className="text-primary">Edit</button>
-                        </li>
-                        <li>
-                            <button
-                                onClick={() => deleteFile(data?._id)}
-                                className="text-error">Delete</button>
-                        </li>
-                    </ul>
+                    {
+                        mode === "recovery" ? <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box text-sm ">
+                            <li className='flex'>
+                                <button className="text-primary text-end w-full">Edit</button>
+                            </li>
+                            <li>
+                                <button
+                                    onClick={() => deletePermanently(data?._id)}
+                                    className="text-error">Delete Permanently</button>
+                            </li>
+                        </ul>
+                            :
+                            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <li>
+                                    <button className="text-primary">Edit</button>
+                                </li>
+                                <li>
+                                    <button
+                                        onClick={() => deleteFile(data?._id)}
+                                        className="text-error">Delete</button>
+                                </li>
+                            </ul>
+                    }
+
                 </div>
             </div>
             {

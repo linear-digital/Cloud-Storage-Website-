@@ -54,16 +54,17 @@ export function FilesTable() {
         },
     });
     const dispatch = useDispatch()
+    console.log(selected)
     const selectAll = () => {
-        if (selected.length === files.length) {
+        if (selected.length === files?.data?.length) {
             setSelected([]);
         } else {
-            setSelected(files);
+            setSelected(files?.data);
         }
     }
     const selectOne = (file) => {
-        if (selected.filter((item) => item?._id === file?._id).length > 0) {
-            setSelected(selected.filter((item) => item?._id !== file?._id));
+        if (selected?.filter((item) => item?._id === file?._id).length > 0) {
+            setSelected(selected?.filter((item) => item?._id !== file?._id));
         }
         else {
             setSelected([...selected, file]);
@@ -71,7 +72,7 @@ export function FilesTable() {
     }
     const deleteFile = async (id) => {
         try {
-            const res = await api.delete(`/file/${id}`)
+            const res = await api.post(`/file/bin/${id}`)
             toast.success("File deleted successfully")
             dispatch(setReloadUser(res))
             refetch()
@@ -88,7 +89,7 @@ export function FilesTable() {
                 <thead>
                     <tr>
                         <th className="border-b border-blue-gray-100 bg-white p-4">
-                            <Checkbox checked={selected.length === files.length} onChange={selectAll} />
+                            <Checkbox checked={selected.length === files?.data?.length} onChange={selectAll} />
                         </th>
                         {TABLE_HEAD.map((head) => (
                             <th key={head} className="border-b border-blue-gray-100 bg-white p-4">
