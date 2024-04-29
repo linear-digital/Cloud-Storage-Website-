@@ -19,7 +19,7 @@ export function UploadDialog({ open, setOpen }) {
     const handleOpen = () => setOpen(!open);
     const props = {
         name: 'file',
-        action: 'http://localhost:4000/api/file/upload',
+        action: 'https://temp.mdtamiz.com/api/file/upload',
         headers: {
             authorization: 'authorization-text',
             userid: user?._id,
