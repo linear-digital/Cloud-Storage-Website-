@@ -5,6 +5,7 @@ const reloadSlice = createSlice({
     initialState: {
         reloadFiles: null,
         reloadUser: null,
+        reloadFolder: null,
     },
     reducers: {
         setReloadFiles: (state, action) => {
@@ -12,8 +13,11 @@ const reloadSlice = createSlice({
         },
         setReloadUser: (state, action) => {
             state.reloadUser = action.payload;
+        }, 
+        setReloaFolder: (state, action) => {
+            state.reloadFolder = action.payload;
         },
     },
 });
-export const { setReloadFiles, setReloadUser } = reloadSlice.actions;
+export const { setReloadFiles, setReloadUser,setReloaFolder } = reloadSlice.actions;
 export default reloadSlice.reducer

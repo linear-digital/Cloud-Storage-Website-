@@ -8,7 +8,7 @@ import { FilesTable } from './_SUB/FilesTable';
 
 const Home = () => {
     return (
-        <div className='px-5'>
+        <div className='px-5 w-full'>
             <section className='flex gap-7 flex-wrap'>
                 {
                     icons.map((icon, index) => {

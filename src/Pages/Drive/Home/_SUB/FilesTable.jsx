@@ -13,6 +13,7 @@ import { filesize } from "../../../../helper/fileSize";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setReloadUser } from "../../../../redux/Slice/reloadSlice";
+import Loader from "../../../../Components/Loader";
 const TABLE_ROWS = [
     {
         name: "John Michael",
@@ -79,7 +80,7 @@ export function FilesTable() {
         }
     }
     if (isLoading) {
-        return <div>Loading</div>
+        return <Loader />
     }
     return (
         <Card className="h-auto w-full  mt-10 bg-white">
@@ -103,7 +104,7 @@ export function FilesTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {files.map((file, index) => (
+                    {files?.data?.map((file, index) => (
                         <tr key={file?._id} className="even:bg-blue-gray-50/50">
                             <td className="p-4">
                                 <Checkbox checked={

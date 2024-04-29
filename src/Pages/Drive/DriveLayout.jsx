@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import TopNav from './Navbar/TopNav';
 import Sidebar from './Sidebar';
 import { useEffect } from 'react';
+import { CreateFolder } from '../../Components/Dialog/CreateFolder';
 
 const DriveLayout = () => {
     // useEffect(() => {
@@ -17,6 +19,7 @@ const DriveLayout = () => {
     //       });
     //     };
     //   }, []);
+    const [show, setShow] = useState(false)
     return (
         <main className="flex  w-full bg-[#EAEDF2]">
 
@@ -27,10 +30,13 @@ const DriveLayout = () => {
                         <h1 className='text-[20px] font-semibold pb-5 pl-2'>
                             File Manager
                         </h1>
-                        <button className='btn btn-link text-base'>
+                        <button 
+                        onClick={() => setShow(!show)}
+                        className='btn btn-link text-base'>
                             Create New Folder
                         </button>
                     </div>
+                    <CreateFolder open={show} setOpen={setShow}/>
                     <div className="flex w-full h-screen overflow-hidden">
                         <Sidebar />
                         <div className="w-full h-full overflow-y-auto">
