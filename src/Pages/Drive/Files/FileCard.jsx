@@ -8,6 +8,8 @@ import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { setReloadUser } from '../../../redux/Slice/reloadSlice';
 import Loader from '../../../Components/Loader';
+import axios from 'axios';
+import { DialogWithImage } from '../../../Components/Dialog/imageDialog';
 
 const FileCard = ({ data, refetch, mode, index }) => {
     const dispatch = useDispatch()
@@ -34,6 +36,23 @@ const FileCard = ({ data, refetch, mode, index }) => {
         } catch (error) {
             setLoading(false)
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+        }
+    }
+    const dowloadFile = async (id) => {
+        try {
+            const response = await api.get(`/file/download/${id}`, {
+                responseType: 'blob' // Ensure response is treated as binary data
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', data?.originalname);
+            document.body.appendChild(link);
+            link.click();
+            // Clean up the URL object after the download is complete
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error downloading file:', error);
         }
     }
     if (loading) {
@@ -63,6 +82,11 @@ const FileCard = ({ data, refetch, mode, index }) => {
                             :
                             <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                 <li>
+                                    <button
+                                        onClick={() => dowloadFile(data?._id)}
+                                        className="text-primary">Dowload</button>
+                                </li>
+                                <li>
                                     <button className="text-primary">Edit</button>
                                 </li>
                                 <li>
@@ -77,10 +101,7 @@ const FileCard = ({ data, refetch, mode, index }) => {
             </div>
             {
                 data?.mimetype?.startsWith("image") ?
-                    <img
-                        loading='lazy'
-                        className='max-h-[200px] w-full object-cover'
-                        src={imageurl(data?.path)} alt="" />
+                   <DialogWithImage path={imageurl(data?.path)} file={data}/>
                     :
                     <img
                         loading='lazy'
