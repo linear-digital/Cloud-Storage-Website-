@@ -25,6 +25,7 @@ import { faDatabase } from '@fortawesome/free-solid-svg-icons';
 import { Progress } from '@material-tailwind/react';
 import { useSelector } from 'react-redux';
 import { UploadDialog } from '../../Components/Dialog/UploadDialog';
+import { useLocation } from 'react-router-dom';
 
 
 
@@ -36,7 +37,8 @@ const links = [
     },
     {
         name: "Files",
-        icon: faFile
+        icon: faFile,
+        path: "/drive/files"
     },
     {
         name: "Starred",
@@ -68,7 +70,7 @@ const links = [
 const Sidebar = () => {
     const { user } = useSelector((state) => state.user)
     const [active, setActive] = useState("/drive");
-
+    const location = useLocation()
     const [open, setOpen] = useState('')
     const upgrade = () => {
 
@@ -83,7 +85,7 @@ const Sidebar = () => {
                     links.map((link, index) => (
                         <li key={index} className=''>
                             <div className='flex items-center'>
-                                <Link to="/drive" className={`flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-black font-semibold w-full pl-8  text-blue-gray-700 hover:text-white ${active === link.path ? 'bg-black text-white shadow' : ''}`}>
+                                <Link to={link.path} className={`flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-black font-semibold w-full pl-8  text-blue-gray-700 hover:text-white ${location.pathname === link.path ? 'bg-black text-white shadow' : ''}`}>
                                     <FontAwesomeIcon icon={link.icon} width={20} height={20} />
                                     <span>
                                         {link.name}

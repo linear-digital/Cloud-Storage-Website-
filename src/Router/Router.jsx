@@ -5,6 +5,7 @@ import DriveLayout from '../Pages/Drive/DriveLayout'
 import Home from '../Pages/Drive/Home/Home'
 import Login from '../Pages/Auth/Login'
 import Signup from '../Pages/Auth/Signup'
+import Files from '../Pages/Drive/Files/Files'
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Home />
+          },
+          {
+            path: 'files',
+            element: <Files />
           }
         ]
       },
