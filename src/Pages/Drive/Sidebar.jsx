@@ -69,7 +69,6 @@ const links = [
 
 const Sidebar = () => {
     const { user } = useSelector((state) => state.user)
-    const [active, setActive] = useState("/drive");
     const location = useLocation()
     const [open, setOpen] = useState('')
     const upgrade = () => {
