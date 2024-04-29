@@ -15,14 +15,16 @@ import { useState } from "react";
 import Cookie from 'js-cookie';
 import { api } from '../../Components/axios/api';
 import { toast } from 'react-hot-toast';
+import { useEffect } from 'react';
 export default function Login() {
+    const token = Cookie.get('authToken')
     const navigate = useNavigate();
-    const formHandler =async (e) => {
+    const formHandler = async (e) => {
         e.preventDefault();
         const target = new FormData(e.target);
         const data = Object.fromEntries(target.entries())
         try {
-            const res = await api.post('/user/login', {...data, provider: "password"})
+            const res = await api.post('/user/login', { ...data, provider: "password" })
             Cookie.set('authToken', res.data.token)
             toast.success('Login Successfully')
             navigate('/drive')
@@ -31,6 +33,9 @@ export default function Login() {
         }
     }
     const [show, setShow] = useState(false)
+    useEffect(() => {
+        if (token) navigate('/drive')
+    }, [token])
     return (
         <section className="w-screen flex justify-center pt-20">
             <Card color="transparent" shadow={true} className="p-5 w-[500px]">
@@ -69,7 +74,7 @@ export default function Login() {
                             labelProps={{
                                 className: "before:content-none after:content-none",
                             }}
-                            icon={<FontAwesomeIcon onClick={() => setShow(!show)} icon={faEye} width={16}/>}
+                            icon={<FontAwesomeIcon onClick={() => setShow(!show)} icon={faEye} width={16} />}
                         />
                     </div>
                     <Checkbox

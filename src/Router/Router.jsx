@@ -15,7 +15,8 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Public />
+        // element: <Public />
+        element: <Login />,
       },
       {
         path: 'drive',
