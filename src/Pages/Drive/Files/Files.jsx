@@ -14,6 +14,7 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
+import { toast } from 'react-hot-toast';
 
 const Files = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
@@ -70,16 +71,46 @@ const Files = ({ mode }) => {
         }
     }, [category])
 
-    
+    const [loading, setLoading] = useState(false)
     const [openDownload, setOpenDownload] = useState(false)
+    const deleteFiles = async () => {
+        const confirm = window.confirm("Are you sure you want to delete selected files?")
+        if (!confirm) return
+        setLoading(true)
+        try {
+            const res = await api.post('/file/update', { ids: selected.map((item) => item?._id), update: { deleted: true } })
+            refetch()
+            setLoading(false)
+            toast.success("File moved to bin successfully")
+            setSelected([])
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+            setLoading(false)
+        }
+    }
+    const deletePermanently = async () => {
+        const confirm = window.confirm("Are you sure you want to delete selected files permanently?")
+        if (!confirm) return
+        setLoading(true)
+        try {
+            const res = await api.post('/file/delete', { ids: selected.map((item) => item?._id) })
+            refetch()
+            setLoading(false)
+            toast.success("File deleted successfully")
+            setSelected([])
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+            setLoading(false)
+        }
+    }
     // console.log(selected.length)
-    if (isLoading) {
+    if (isLoading || loading) {
         return <Loader />
     }
     return (
         <div className='w-full px-5'>
             {
-                openDownload && <DownloadDialog open={openDownload} setOpen={setOpenDownload} selected={selected}/>
+                openDownload && <DownloadDialog open={openDownload} setOpen={setOpenDownload} selected={selected} />
             }
             <h1 className='text-xl font-semibold'>{
                 category ? <span className='capitalize'>
@@ -106,19 +137,35 @@ const Files = ({ mode }) => {
                         Selected
                     </h5>
                 </div>
-                <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'>
-                    <FontAwesomeIcon icon={faTrashCan} />
-                </button>
-                <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'>
-                    <FontAwesomeIcon icon={faUserPlus} />
-                </button>
+
                 {
-                    selected.length > 0 &&
-                    <button
-                        onClick={()=> setOpenDownload(true)}
-                        className='text-[16px] hover:text-primary mt-1 ' title='Share Link'>
-                        <FontAwesomeIcon icon={faDownload} />
-                    </button>
+                    mode === "recovery" ?
+                        selected.length > 0 &&
+                        <div className='flex gap-5'>
+                            <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
+                                onClick={deletePermanently}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} />
+                                <span className='text-sm ml-1'>Empty Bin</span>
+                            </button>
+                        </div>
+                        :
+                        selected.length > 0 &&
+                        <div className='flex gap-5'>
+                            <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
+                                onClick={deleteFiles}
+                            >
+                                <FontAwesomeIcon icon={faTrashCan} />
+                            </button>
+                            <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'>
+                                <FontAwesomeIcon icon={faUserPlus} />
+                            </button>
+                            <button
+                                onClick={() => setOpenDownload(true)}
+                                className='text-[16px] hover:text-primary mt-1 ' title='Share Link'>
+                                <FontAwesomeIcon icon={faDownload} />
+                            </button>
+                        </div>
                 }
             </div>
             <div className={`${files?.data?.length > 0 && "grid lg:grid-cols-9 md:grid-cols-6 grid-cols-3 gap-3"} mt-10`}>
