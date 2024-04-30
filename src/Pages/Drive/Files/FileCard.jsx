@@ -6,12 +6,11 @@ import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { api } from '../../../Components/axios/api';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
-import { setReloadUser } from '../../../redux/Slice/reloadSlice';
 import Loader from '../../../Components/Loader';
-import axios from 'axios';
-import { DialogWithImage } from '../../../Components/Dialog/imageDialog';
+import { Image } from 'antd';
+import { Checkbox } from '@mui/material';
 
-const FileCard = ({ data, refetch, mode, index }) => {
+const FileCard = ({ data, refetch, mode, index, onClick, selected }) => {
     const dispatch = useDispatch()
     const [loading, setLoading] = React.useState(false)
     const deleteFile = async (id) => {
@@ -60,7 +59,8 @@ const FileCard = ({ data, refetch, mode, index }) => {
     }
     return (
         <div className='flex w-full shadow-md rounded flex-col p-2'>
-            <div className='pb-2 flex items-center justify-between px-2'>
+            <div className='pb-2 flex items-center justify-between'>
+                <Checkbox color="warning" onChange={onClick} checked={selected} />;
                 <p className='text-xs'>
                     {data?.filename.slice(0, 8) + "...." + data?.extension}
                 </p>
@@ -101,7 +101,9 @@ const FileCard = ({ data, refetch, mode, index }) => {
             </div>
             {
                 data?.mimetype?.startsWith("image") ?
-                   <DialogWithImage path={imageurl(data?.path)} file={data}/>
+                    <Image
+                        src={imageurl(data?.path)}
+                    />
                     :
                     <img
                         loading='lazy'
