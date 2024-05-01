@@ -8,6 +8,7 @@ import Signup from '../Pages/Auth/Signup'
 import Files from '../Pages/Drive/Files/Files'
 import AuthChecker from '../helper/authChecker'
 import Recent from '../Pages/Drive/Recent/Recent'
+import Folders from '../Pages/Drive/Folders/Folders'
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
           {
             path: 'recent',
             element: <Recent />
+          },
+          {
+            path: 'folders',
+            element: <Folders />
           },
           {
             path: 'recovery',

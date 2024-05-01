@@ -4,7 +4,6 @@ import React from 'react';
 import { api } from '../../../Components/axios/api';
 import { useSelector } from 'react-redux';
 import Loader from '../../../Components/Loader';
-import FileCard from './FileCard';
 import { useState } from 'react';
 import { Checkbox } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,32 +12,28 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
 import { toast } from 'react-hot-toast';
+import FileCard from '../Files/FileCard';
 
-const Files = ({ mode }) => {
+const Folders = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
     const { reloadFiles } = useSelector((state) => state.reload)
     const location = useLocation()
 
     const searchParams = new URLSearchParams(location.search);
-    const category = searchParams.get("category");
     const folder = searchParams.get("folder");
 
     const { data: files, isLoading, refetch } = useQuery({
-        queryKey: ["files", user?._id, reloadFiles, mode, category],
+        queryKey: ["files", user?._id, reloadFiles,],
         queryFn: async () => {
-            if (mode === "recovery") {
-                const { data } = await api.get(`/file/bin/${user?._id}`);
-                return data;
-            }
-            else {
-                const { data } = await api.get(`/file/user/${user?._id}?limit=500&category=${category || ""}`);
-                return data;
-            }
 
+            const { data } = await api.post(`/file/folder?limit=500`, {
+                folder,
+            });
+            return data;
         },
         enabled: !!user
     });
-  
+
     const [selected, setSelected] = useState([]);
     const selectOne = (file) => {
         if (selected?.filter((item) => item?._id === file?._id).length > 0) {
@@ -49,26 +44,6 @@ const Files = ({ mode }) => {
         }
     }
     const [name, setName] = useState("")
-    React.useEffect(() => {
-        if (!category) {
-            setName("All FIles")
-        }
-        else if (category === "application/pdf") {
-            setName("PDF")
-        }
-        else if (category === "image") {
-            setName("Images")
-        }
-        else if (category === "video") {
-            setName("Videos")
-        }
-        else if (category === "text/plain") {
-            setName("Text")
-        }
-        else if (category.includes('application')) {
-            setName("Documents & Files")
-        }
-    }, [category])
 
     const [loading, setLoading] = useState(false)
     const [openDownload, setOpenDownload] = useState(false)
@@ -112,9 +87,7 @@ const Files = ({ mode }) => {
                 openDownload && <DownloadDialog open={openDownload} setOpen={setOpenDownload} selected={selected} />
             }
             <h1 className='text-xl font-semibold'>{
-                category ? <span className='capitalize'>
-                    {name}
-                </span> : "All FIles"
+                files?.folder?.name
             }</h1>
             <div className="flex gap-5 items-center">
                 <div className="flex items-center">
@@ -191,4 +164,4 @@ const Files = ({ mode }) => {
     );
 };
 
-export default Files;
+export default Folders;

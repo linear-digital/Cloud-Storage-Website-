@@ -14,7 +14,7 @@ const RecentFolderCard = ({ data }) => {
     const navigate = useNavigate();
     return (
         <div className='p-5 bg-white rounded w-full hover:shadow-xl shadow-blue-100 cursor-pointer'
-            onClick={() => navigate(`/drive/files?folder=${data?._id}`)}
+            onClick={() => navigate(`/drive/folders?folder=${data?._id}`)}
         >
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
