@@ -15,16 +15,26 @@ import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
 import { toast } from 'react-hot-toast';
 import FileCard from '../Files/FileCard';
+import RecentFolderCard from '../../../Components/Card/RecentFolderCard';
 
 const Recent = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
-    const { reloadFiles } = useSelector((state) => state.reload)
+    const { reloadFiles, reloadFolder } = useSelector((state) => state.reload)
     const location = useLocation()
 
     const searchParams = new URLSearchParams(location.search);
     const category = searchParams.get("category");
     const folder = searchParams.get("folder");
     const type = searchParams.get("type");
+
+    const { data: folders, isLoading: isFolderLoading } = useQuery({
+        queryKey: ["folders", user?._id, reloadFolder],
+        queryFn: async () => {
+            const { data } = await api.get(`/folder/user/${user?._id}`);
+            return data;
+        },
+        enabled: !!user
+    });
 
     const { data: files, isLoading, refetch } = useQuery({
         queryKey: ["files", user?._id, reloadFiles, mode, category],
@@ -141,7 +151,15 @@ const Recent = ({ mode }) => {
                         </div>
                 }
             </div>
+            <div className='grid grid-cols-4 gap-5 mt-5'>
+                {
+                    folders?.data?.map((folder, index) => (
+                        <RecentFolderCard data={folder} key={index} />
+                    ))
+                }
+            </div>
             <div className={`${files?.data?.length > 0 && "file-container"} lg:mt-10 mt-5`}>
+
                 {
                     files?.data?.length > 0 ?
                         files?.data?.map((file, index) => (

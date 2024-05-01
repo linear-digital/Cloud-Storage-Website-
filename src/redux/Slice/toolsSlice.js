@@ -4,7 +4,8 @@ const toolSlice = createSlice({
     name: 'tools', // Name for your slice
     initialState: {
         showSidebar: false,
-        selectedFile: null
+        selectedFile: null,
+        showFileInfo: false
     },
     reducers: {
         setShowSidebar: (state, action) => {
@@ -12,8 +13,15 @@ const toolSlice = createSlice({
         },
         setSelectedFile: (state, action) => {
             state.selectedFile = action.payload;
+        },
+        setShowFileInfo: (state, action) => {
+            state.showFileInfo = action.payload;
         }
     },
 });
-export const { setShowSidebar, setSelectedFile } = toolSlice.actions;
+export const {
+    setShowSidebar,
+    setSelectedFile,
+    setShowFileInfo
+} = toolSlice.actions;
 export default toolSlice.reducer

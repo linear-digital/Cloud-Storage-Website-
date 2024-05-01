@@ -43,17 +43,17 @@ const links = [
     {
         name: "Starred",
         icon: faStar,
-        path: "/drive/files?type=starred"
+        path: "/drive/starred"
     },
     {
         name: "Shared",
         icon: faCircleNodes,
-        path: "/drive/files?type=shared"
+        path: "/drive/shared"
     },
     {
         name: "Recent",
         icon: faFolder,
-        path: "/drive/files?type=recent"
+        path: "/drive/recent"
     },
     {
         name: "Recovery",

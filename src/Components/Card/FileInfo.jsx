@@ -7,12 +7,20 @@ import moment from 'moment/moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { fileIconProvider } from '../../Pages/Drive/Files/file_icon_provider';
+import { useDispatch } from 'react-redux';
+import { setSelectedFile, setShowFileInfo } from '../../redux/Slice/toolsSlice';
 
-const FileInfo = ({ setShow }) => {
+const FileInfo = () => {
+    const dispatch = useDispatch()
     const { selectedFile } = useSelector(state => state.tools)
     return (
         <div className='min-w-[260px] max-w-[270px] bg-white p-5 rounded'>
-            <button className='text-xl float-end hover:text-primary'>
+            <button className='text-xl float-end hover:text-primary'
+                onClick={() => {
+                    dispatch(setShowFileInfo(false))
+                    dispatch(setSelectedFile(null))
+                }}
+            >
                 <FontAwesomeIcon
                     icon={faXmark}
                 />

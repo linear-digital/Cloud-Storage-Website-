@@ -15,7 +15,7 @@ import FileInfo from '../../Components/Card/FileInfo';
 const DriveLayout = () => {
     const dispatch = useDispatch()
     const [show, setShow] = useState(false)
-    const { showSidebar } = useSelector(state => state.tools)
+    const { showSidebar, showFileInfo, selectedFile } = useSelector(state => state.tools)
     const hideSidebar = () => {
         dispatch(setShowSidebar(false))
         console.log(showSidebar)
@@ -39,7 +39,7 @@ const DriveLayout = () => {
                     <CreateFolder open={show} setOpen={setShow} />
                     <div className="flex w-full h-screen overflow-hidden">
                         <div className='lg:block md:hidden hidden'>
-                            <Sidebar  />
+                            <Sidebar />
                         </div>
                         {
                             showSidebar && <div className='absolute z-50 top-0 left-0 right-0 h-screen shadow-2xl bg-white'>
@@ -47,13 +47,16 @@ const DriveLayout = () => {
                                     <Logo />
                                     <Switch color="warning" checked={showSidebar} onChange={hideSidebar} />
                                 </div>
-                                <Sidebar  hideSidebar={hideSidebar}/>
+                                <Sidebar hideSidebar={hideSidebar} />
                             </div>
                         }
                         <div className="w-full h-full overflow-y-auto">
                             <Outlet />
                         </div>
-                        <FileInfo />
+                        {
+                            (selectedFile || (selectedFile && showFileInfo)) &&
+                            <FileInfo />
+                        }
                     </div>
                 </div>
             </section>
