@@ -32,11 +32,14 @@ export function CreateFolder({ open, setOpen }) {
             return
         }
         try {
-            const res = await api.post('/folder/create', {
+            const config = {
                 name: name,
-                parent: folder ? folder : 'root',
                 user: user?._id
-            })
+            }
+            if (folder) {
+                config.parent = folder
+            }
+            const res = await api.post('/folder/create', config)
             setOpen(false)
             dispatch(setReloaFolder(res.data))
             toast.success("Folder created successfully")

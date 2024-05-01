@@ -9,6 +9,8 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { fileIconProvider } from '../../Pages/Drive/Files/file_icon_provider';
 import { useDispatch } from 'react-redux';
 import { setSelectedFile, setShowFileInfo } from '../../redux/Slice/toolsSlice';
+import { Chip } from '@material-tailwind/react';
+import { Link } from 'react-router-dom';
 
 const FileInfo = () => {
     const dispatch = useDispatch()
@@ -45,6 +47,23 @@ const FileInfo = () => {
                 <li>
                     <p>
                         Owner : <span>{selectedFile?.user?.name}</span>
+                    </p>
+                </li>
+                <li>
+                    <p className='flex items-center'>
+                        Location : <span>{
+                            selectedFile?.folder ?
+                                <Link to={`/drive/folders?folder=${selectedFile?.folder?._id}`}>
+                                    <Chip color="amber" size="sm" value={selectedFile?.folder?.name}
+                                        className='ml-2'
+                                    />
+                                </Link>
+
+                                :
+                                <Chip color="amber" size="sm" value="Root"
+                                    className='ml-2'
+                                />
+                        }</span>
                     </p>
                 </li>
                 <li>

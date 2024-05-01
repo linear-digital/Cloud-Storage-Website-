@@ -36,7 +36,6 @@ export function UploadDialog({ open, setOpen }) {
                 // setPercent(0);
             }
             if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
                 // setPercent(100);
                 dispatch(setReloadFiles(info.file))
                 dispatch(setReloadUser(info.file))

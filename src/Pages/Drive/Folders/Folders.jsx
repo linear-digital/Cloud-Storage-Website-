@@ -40,13 +40,35 @@ const Folders = ({ mode }) => {
         },
         enabled: !!user
     });
+
     const { data: folders, isLoading: isFolderLoading } = useQuery({
         queryKey: ["folders", user?._id, reloadFolder, folder],
         queryFn: async () => {
-            const { data } = await api.get(`/folder/user/${user?._id}`);
-            return data;
+            if (folder === null) {
+                const { data } = await api.get(`/folder/user/${user?._id}`);
+                return data;
+            }
+            else {
+                return {
+                    data: []
+                }
+            }
         },
-        enabled: !!user
+    });
+
+    const { data: subFolders, isLoading: isSubFolderLoading } = useQuery({
+        queryKey: ["subfolder", user?._id, reloadFolder, folder],
+        queryFn: async () => {
+            if (folder !== null) {
+                const { data } = await api.get(`/folder/folder/${folder}`);
+                return data;
+            }
+            else {
+                return {
+                    data: []
+                }
+            }
+        },
     });
     const [selected, setSelected] = useState([]);
     const selectOne = (file) => {
@@ -91,7 +113,7 @@ const Folders = ({ mode }) => {
         }
     }
     // console.log(selected.length)
-    if (isLoading || loading || isFolderLoading) {
+    if (isLoading || loading || isFolderLoading || isSubFolderLoading) {
         return <Loader />
     }
     return (
@@ -153,13 +175,24 @@ const Folders = ({ mode }) => {
                         </div>
                 }
             </div>
-            <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 mt-5'>
-                {
-                    folders?.data?.map((folder, index) => (
-                        <RecentFolderCard data={folder} key={index} />
-                    ))
-                }
-            </div>
+            {
+                typeof folder === "string" ?
+                    <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 mt-5'>
+                        {
+                            subFolders?.data?.map((folder, index) => (
+                                <RecentFolderCard data={folder} key={index} />
+                            ))
+                        }
+                    </div>
+                    :
+                    <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 mt-5'>
+                        {
+                            folders?.data?.map((folder, index) => (
+                                <RecentFolderCard data={folder} key={index} />
+                            ))
+                        }
+                    </div>
+            }
             {
                 folder !== null && <div className={`${files?.data?.length > 0 && "file-container"} lg:mt-10 mt-5`}>
                     {

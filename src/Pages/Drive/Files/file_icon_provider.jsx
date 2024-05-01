@@ -23,7 +23,7 @@ export const fileIconProvider = (fileType) => {
     else if (fileType === '.txt') {
         return txt
     }
-    else if (fileType === '.mp4') {
+    else if (fileType === '.mp4' || fileType === '.mkv' || fileType === '.webm') {
         return video
     }
     else if (fileType === '.zip') {
@@ -34,5 +34,5 @@ export const fileIconProvider = (fileType) => {
     }
     else if (fileType === '.png' || fileType === '.jpg' || fileType === '.jpeg' || fileType === '.gif' || fileType === '.webp' || fileType === '.svg') {
         return image
-    } 
+    }
 }
