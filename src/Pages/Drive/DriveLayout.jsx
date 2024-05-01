@@ -24,7 +24,7 @@ const DriveLayout = () => {
     }
     useEffect(() => {
         dispatch(setSelectedFile(null))
-    },[location])
+    }, [location])
     return (
         <main className="flex  w-full bg-[#EAEDF2]">
 
@@ -50,7 +50,9 @@ const DriveLayout = () => {
                         </div>
 
                         {
-                            (location.pathname === "/drive/files" || location.pathname === "/drive/folders" || location.pathname === "/drive/recovery")
+                            (location.pathname === "/drive/files" || location.pathname === "/drive/folders" || location.pathname === "/drive/recovery" ||
+                                location.pathname === "/drive/search"
+                            )
                             && <>
                                 {
                                     (selectedFile || (selectedFile && showFileInfo)) &&

@@ -72,8 +72,10 @@ export function DownloadDialog({ open, setOpen, selected }) {
                         <br />
                         Downloading: {percent / 1024 / 1024 > 1024 ? `${(percent / 1024 / 1024 / 1024).toFixed(2)} GB` : percent / 1024 / 1024 > 1 ? `${(percent / 1024 / 1024).toFixed(2)} MB` : `${(percent / 1024).toFixed(2)} KB`}
                     </h3>
-                    <div className="radial-progress" style={{"--value":Math.round((percent * 100) / size) }} role="progressbar">{Math.round((percent * 100) / size)}%</div>
-                    <Button onClick={download}>
+                    <div className="flex justify-center">
+                        <div className="radial-progress" style={{ "--value": Math.round((percent * 100) / size) }} role="progressbar">{Math.round((percent * 100) / size)}%</div>
+                    </div>
+                    <Button onClick={download} className="mx-auto block mt-2">
                         Download
                     </Button>
                     <p className="text-red-500 text-sm">

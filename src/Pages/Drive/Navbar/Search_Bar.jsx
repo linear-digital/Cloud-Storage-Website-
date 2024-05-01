@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { api } from '../../../Components/axios/api';
+import { setFiles } from '../../../redux/Slice/searchSlice';
 
 const Search_Bar = () => {
     const navigate = useNavigate()
@@ -18,7 +19,10 @@ const Search_Bar = () => {
         }
         try {
             if (type === "files") {
-
+                const result = await api.post(`/file/search`, {
+                    search: text
+                })
+                dispatch(setFiles(result.data))
             }
         } catch (error) {
 
@@ -48,6 +52,7 @@ const Search_Bar = () => {
                 >Folders</option>
             </select>
             <button onClick={(e) => {
+                handleSearch()
             }} className='btn hover:shadow btn-primary rounded-none'>Search</button>
         </div>
     );

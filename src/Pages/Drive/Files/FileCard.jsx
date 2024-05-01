@@ -22,7 +22,7 @@ const FileCard = ({ data, refetch, mode, index, onClick, selected }) => {
             const res = await api.post(`/file/bin/${id}`)
             setLoading(false)
             toast.success("File deleted successfully")
-            refetch()
+            refetch && refetch()
         } catch (error) {
             setLoading(false)
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
@@ -34,7 +34,7 @@ const FileCard = ({ data, refetch, mode, index, onClick, selected }) => {
             const res = await api.delete(`/file/${id}`)
             setLoading(false)
             toast.success("File deleted successfully")
-            refetch()
+            refetch && refetch()
         } catch (error) {
             setLoading(false)
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")

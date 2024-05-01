@@ -88,13 +88,13 @@ const Search = ({ mode }) => {
             <div className="flex gap-5 items-center">
                 <div className="flex items-center">
                     <Checkbox
-                        checked={selected.length === files?.data?.length}
+                        checked={selected.length === files?.length}
                         onChange={() => {
-                            if (selected.length === files?.data?.length) {
+                            if (selected.length === files?.length) {
                                 setSelected([])
                             }
                             else {
-                                setSelected(files?.data)
+                                setSelected(files)
                             }
                         }}
                         color="warning" size='small' />
@@ -143,13 +143,12 @@ const Search = ({ mode }) => {
                     ))
                 }
             </div>
-            <div className={`${files?.data?.length > 0 && "file-container"} lg:mt-10 mt-5`}>
+            <div className={`${files?.length > 0 && "file-container"}  mt-5`}>
 
                 {
                     files?.map((file, index) => (
                         <FileCard
                             onClick={() => selectOne(file)}
-                            refetch={refetch}
                             data={file}
                             key={index}
                             mode={mode}
