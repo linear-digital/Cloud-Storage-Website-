@@ -20,7 +20,7 @@ import RecentFolderCard from '../../../Components/Card/RecentFolderCard';
 const Search = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
     const { reloadFiles, reloadFolder } = useSelector((state) => state.reload)
-    const { files, folder } = useSelector((state) => state.search)
+    const { files, folders } = useSelector((state) => state.search)
     const location = useLocation()
 
     // const searchParams = new URLSearchParams(location.search);
@@ -138,7 +138,7 @@ const Search = ({ mode }) => {
             </div>
             <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 mt-5'>
                 {
-                    folder?.map((folder, index) => (
+                    folders?.data?.map((folder, index) => (
                         <RecentFolderCard data={folder} key={index} />
                     ))
                 }

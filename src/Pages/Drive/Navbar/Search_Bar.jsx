@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { api } from '../../../Components/axios/api';
-import { setFiles } from '../../../redux/Slice/searchSlice';
+import { setFiles, setFolders } from '../../../redux/Slice/searchSlice';
 
 const Search_Bar = () => {
     const navigate = useNavigate()
@@ -23,6 +23,14 @@ const Search_Bar = () => {
                     search: text
                 })
                 dispatch(setFiles(result.data))
+                dispatch(setFolders([]))
+            }
+            else if (type === "folders") {
+                const result = await api.post(`/folder/search`, {
+                    search: text
+                })
+                dispatch(setFolders(result.data))
+                dispatch(setFiles([]))
             }
         } catch (error) {
 
