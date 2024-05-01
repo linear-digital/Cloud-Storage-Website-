@@ -11,19 +11,25 @@ import { useSelector } from "react-redux";
 import Cookie from 'js-cookie';
 import { useDispatch } from "react-redux";
 import { setReloadFiles, setReloadUser } from "../../redux/Slice/reloadSlice";
+import { useLocation } from "react-router-dom";
 const { Dragger } = Upload;
 export function UploadDialog({ open, setOpen }) {
     const dispatch = useDispatch()
     const token = Cookie.get('authToken')
     const { user } = useSelector((state) => state.user)
     const handleOpen = () => setOpen(!open);
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search);
+    const folder = searchParams.get('folder')
+
     const props = {
         name: 'file',
         action: 'http://localhost:4500/api/file/upload',
         headers: {
             authorization: 'authorization-text',
             userid: user?._id,
-            token: token
+            token: token,
+            folder: folder
         },
         onChange(info) {
             if (info.file.status !== 'uploading') {

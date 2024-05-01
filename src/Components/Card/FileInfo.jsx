@@ -14,7 +14,7 @@ const FileInfo = () => {
     const dispatch = useDispatch()
     const { selectedFile } = useSelector(state => state.tools)
     return (
-        <div className='min-w-[260px] max-w-[270px] bg-white p-5 rounded'>
+        <div className='min-w-[270px] max-w-[280px] bg-white p-5 rounded'>
             <button className='text-xl float-end hover:text-primary'
                 onClick={() => {
                     dispatch(setShowFileInfo(false))

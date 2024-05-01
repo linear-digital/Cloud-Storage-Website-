@@ -6,6 +6,7 @@ import { faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../axios/api';
 import { useNavigate } from 'react-router-dom';
+import { filesize } from '../../helper/fileSize';
 
 
 const RecentFolderCard = ({ data }) => {
@@ -29,7 +30,7 @@ const RecentFolderCard = ({ data }) => {
             </div>
             <div className="flex items-center mt-2 text-blue-gray-700 gap-2">
                 <h5 className='text-sm font-normal'>
-                    {data?.size} MB
+                    {(data?.size).toFixed(2)} MB
                 </h5>
                 <div className="dot" />
                 <h5 className='text-sm font-normal'>

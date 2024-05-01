@@ -85,7 +85,7 @@ const Sidebar = ({ hideSidebar }) => {
     }
     const [openUpload, setOpenUpload] = useState(false)
     return (
-        <div className='w-[350px] bg-white h-full overflow-y-auto py-5 rounded'
+        <div className='w-[320px] bg-white h-full overflow-y-auto py-5 rounded'
             onClick={hideSidebar}
         >
 

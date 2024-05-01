@@ -28,6 +28,7 @@ const Folders = ({ mode }) => {
 
             const { data } = await api.post(`/file/folder?limit=500`, {
                 folder,
+                user: user?._id
             });
             return data;
         },
