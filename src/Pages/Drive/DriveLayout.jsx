@@ -7,26 +7,31 @@ import { useEffect } from 'react';
 import { CreateFolder } from '../../Components/Dialog/CreateFolder';
 import Logo from '../../Components/Global/Logo/Logo';
 import { useDispatch } from 'react-redux';
-import { setShowSidebar } from '../../redux/Slice/toolsSlice';
+import { setSelectedFile, setShowSidebar } from '../../redux/Slice/toolsSlice';
 import { Switch } from '@mui/material';
 import { useSelector } from 'react-redux';
 import FileInfo from '../../Components/Card/FileInfo';
+import { useLocation } from 'react-router-dom';
 
 const DriveLayout = () => {
     const dispatch = useDispatch()
     const [show, setShow] = useState(false)
     const { showSidebar, showFileInfo, selectedFile } = useSelector(state => state.tools)
+    const location = useLocation()
     const hideSidebar = () => {
         dispatch(setShowSidebar(false))
         console.log(showSidebar)
     }
+    useEffect(() => {
+        dispatch(setSelectedFile(null))
+    },[location])
     return (
         <main className="flex  w-full bg-[#EAEDF2]">
 
             <section className='w-full'>
                 <TopNav />
                 <div className='w-full p-5'>
-                    
+
                     <div className="flex w-full h-screen overflow-hidden">
                         <div className='lg:block md:hidden hidden'>
                             <Sidebar />
@@ -43,10 +48,17 @@ const DriveLayout = () => {
                         <div className="w-full h-full overflow-y-auto">
                             <Outlet />
                         </div>
+
                         {
-                            (selectedFile || (selectedFile && showFileInfo)) &&
-                            <FileInfo />
+                            (location.pathname === "/drive/files" || location.pathname === "/drive/folders" || location.pathname === "/drive/recovery")
+                            && <>
+                                {
+                                    (selectedFile || (selectedFile && showFileInfo)) &&
+                                    <FileInfo />
+                                }
+                            </>
                         }
+
                     </div>
                 </div>
             </section>

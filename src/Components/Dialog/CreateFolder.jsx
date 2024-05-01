@@ -14,6 +14,7 @@ import { api } from "../axios/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { setReloaFolder } from "../../redux/Slice/reloadSlice";
+import { useLocation } from "react-router-dom";
 
 export function CreateFolder({ open, setOpen }) {
     const { user } = useSelector((state) => state.user)
@@ -21,6 +22,10 @@ export function CreateFolder({ open, setOpen }) {
     const [name, setName] = useState("")
     const [error, setError] = useState("")
     const dispatch = useDispatch()
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search);
+    const folder = searchParams.get('folder')
+
     const createFolder = async () => {
         if (!name) {
             setError("Folder name is required")
@@ -29,7 +34,7 @@ export function CreateFolder({ open, setOpen }) {
         try {
             const res = await api.post('/folder/create', {
                 name: name,
-                parent: 'root',
+                parent: folder ? folder : 'root',
                 user: user?._id
             })
             setOpen(false)

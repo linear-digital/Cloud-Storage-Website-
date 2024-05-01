@@ -28,6 +28,7 @@ import { UploadDialog } from '../../Components/Dialog/UploadDialog';
 import { useLocation } from 'react-router-dom';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { CreateFolder } from '../../Components/Dialog/CreateFolder';
+import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
 
 
 
@@ -43,9 +44,9 @@ const links = [
         path: "/drive/files"
     },
     {
-        name: "Starred",
-        icon: faStar,
-        path: "/drive/starred"
+        name: "Folders",
+        icon: faFolderOpen,
+        path: "/drive/folders"
     },
     {
         name: "Shared",
@@ -66,13 +67,7 @@ const links = [
         name: "Settings",
         icon: faGear,
         // path: "/drive/settings"
-    },
-    {
-        name: "Zip Files",
-        icon: faFileZipper,
-        path: "/drive/files?category=application/zip"
     }
-
 ]
 
 const Sidebar = ({ hideSidebar }) => {

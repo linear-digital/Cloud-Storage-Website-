@@ -13,28 +13,41 @@ import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
 import { toast } from 'react-hot-toast';
 import FileCard from '../Files/FileCard';
+import RecentFolderCard from '../../../Components/Card/RecentFolderCard';
 
 const Folders = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
-    const { reloadFiles } = useSelector((state) => state.reload)
+    const { reloadFiles, reloadFolder } = useSelector((state) => state.reload)
     const location = useLocation()
 
     const searchParams = new URLSearchParams(location.search);
     const folder = searchParams.get("folder");
-
     const { data: files, isLoading, refetch } = useQuery({
-        queryKey: ["files", user?._id, reloadFiles,],
+        queryKey: ["files", user?._id, reloadFiles, folder],
         queryFn: async () => {
-
-            const { data } = await api.post(`/file/folder?limit=500`, {
-                folder,
-                user: user?._id
-            });
+            if (folder === null) {
+                return {
+                    data: []
+                }
+            }
+            else {
+                const { data } = await api.post(`/file/folder?limit=500`, {
+                    folder,
+                    user: user?._id
+                });
+                return data;
+            }
+        },
+        enabled: !!user
+    });
+    const { data: folders, isLoading: isFolderLoading } = useQuery({
+        queryKey: ["folders", user?._id, reloadFolder, folder],
+        queryFn: async () => {
+            const { data } = await api.get(`/folder/user/${user?._id}`);
             return data;
         },
         enabled: !!user
     });
-
     const [selected, setSelected] = useState([]);
     const selectOne = (file) => {
         if (selected?.filter((item) => item?._id === file?._id).length > 0) {
@@ -44,7 +57,6 @@ const Folders = ({ mode }) => {
             setSelected([...selected, file]);
         }
     }
-    const [name, setName] = useState("")
 
     const [loading, setLoading] = useState(false)
     const [openDownload, setOpenDownload] = useState(false)
@@ -79,7 +91,7 @@ const Folders = ({ mode }) => {
         }
     }
     // console.log(selected.length)
-    if (isLoading || loading) {
+    if (isLoading || loading || isFolderLoading) {
         return <Loader />
     }
     return (
@@ -141,26 +153,35 @@ const Folders = ({ mode }) => {
                         </div>
                 }
             </div>
-            <div className={`${files?.data?.length > 0 && "file-container"} lg:mt-10 mt-5`}>
+            <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 mt-5'>
                 {
-                    files?.data?.length > 0 ?
-                        files?.data?.map((file, index) => (
-                            <FileCard
-                                onClick={() => selectOne(file)}
-                                refetch={refetch}
-                                data={file}
-                                key={index}
-                                mode={mode}
-                                index={index}
-                                selected={selected.filter((item) => item?._id === file?._id).length > 0}
-                            />
-                        ))
-                        :
-                        <h1 className='text-base text-primary font-semibold'>{
-                            mode === "recovery" ? "Your Recycle Bin is empty" : "No Files Found"
-                        }</h1>
+                    folders?.data?.map((folder, index) => (
+                        <RecentFolderCard data={folder} key={index} />
+                    ))
                 }
             </div>
+            {
+                folder !== null && <div className={`${files?.data?.length > 0 && "file-container"} lg:mt-10 mt-5`}>
+                    {
+                        files?.data?.length > 0 ?
+                            files?.data?.map((file, index) => (
+                                <FileCard
+                                    onClick={() => selectOne(file)}
+                                    refetch={refetch}
+                                    data={file}
+                                    key={index}
+                                    mode={mode}
+                                    index={index}
+                                    selected={selected.filter((item) => item?._id === file?._id).length > 0}
+                                />
+                            ))
+                            :
+                            <h1 className='text-base text-primary font-semibold'>{
+                                mode === "recovery" ? "Your Recycle Bin is empty" : "No Files Found"
+                            }</h1>
+                    }
+                </div>
+            }
         </div>
     );
 };
