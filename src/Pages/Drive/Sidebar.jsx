@@ -73,7 +73,7 @@ const links = [
 
 ]
 
-const Sidebar = () => {
+const Sidebar = ({ hideSidebar }) => {
     const { user } = useSelector((state) => state.user)
     const location = useLocation()
     const [open, setOpen] = useState('')
@@ -82,13 +82,15 @@ const Sidebar = () => {
     }
     const [openUpload, setOpenUpload] = useState(false)
     return (
-        <div className='w-[350px] bg-white h-full overflow-y-auto py-5 rounded'>
+        <div className='w-[350px] bg-white h-full overflow-y-auto py-5 rounded'
+            onClick={hideSidebar}
+        >
 
             <UploadDialog open={openUpload} setOpen={setOpenUpload} />
             <ul className=''>
                 {
                     links.map((link, index) => (
-                        <li key={index} className=''>
+                        <li key={index} className='' >
                             <div className='flex items-center'>
                                 <Link to={link.path} className={`flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-black font-semibold w-full pl-8  text-blue-gray-700 hover:text-white ${location.pathname === link.path ? 'bg-black text-white shadow' : ''}`}>
                                     <FontAwesomeIcon icon={link.icon} width={20} height={20} />

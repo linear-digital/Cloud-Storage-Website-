@@ -24,6 +24,7 @@ const Files = ({ mode }) => {
     const searchParams = new URLSearchParams(location.search);
     const category = searchParams.get("category");
     const folder = searchParams.get("folder");
+    const type = searchParams.get("type");
 
     const { data: files, isLoading, refetch } = useQuery({
         queryKey: ["files", user?._id, reloadFiles, mode, category],
@@ -40,6 +41,7 @@ const Files = ({ mode }) => {
         },
         enabled: !!user
     });
+
     const [selected, setSelected] = useState([]);
     const selectOne = (file) => {
         if (selected?.filter((item) => item?._id === file?._id).length > 0) {
@@ -68,6 +70,12 @@ const Files = ({ mode }) => {
         }
         else if (category.includes('application')) {
             setName("Documents & Files")
+        }
+        else if (type === "starred") {
+            setName("Starred")
+        }
+        else if (mode === "recovery") {
+            setName("Recovery")
         }
     }, [category])
 
@@ -108,7 +116,7 @@ const Files = ({ mode }) => {
         return <Loader />
     }
     return (
-        <div className='w-full px-5'>
+        <div className='w-full lg:px-5'>
             {
                 openDownload && <DownloadDialog open={openDownload} setOpen={setOpenDownload} selected={selected} />
             }
@@ -168,7 +176,7 @@ const Files = ({ mode }) => {
                         </div>
                 }
             </div>
-            <div className={`${files?.data?.length > 0 && "grid lg:grid-cols-9 md:grid-cols-6 grid-cols-3 gap-3"} mt-10`}>
+            <div className={`${files?.data?.length > 0 && "file-container"} lg:mt-10 mt-5`}>
                 {
                     files?.data?.length > 0 ?
                         files?.data?.map((file, index) => (

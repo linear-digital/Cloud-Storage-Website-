@@ -16,9 +16,12 @@ import Cookie from 'js-cookie';
 import { api } from '../../Components/axios/api';
 import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/Slice/userSlice';
 export default function Login() {
     const token = Cookie.get('authToken')
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const formHandler = async (e) => {
         e.preventDefault();
         const target = new FormData(e.target);
@@ -26,8 +29,9 @@ export default function Login() {
         try {
             const res = await api.post('/user/login', { ...data, provider: "password" })
             Cookie.set('authToken', res.data.token)
+            dispatch(setUser(res.data.user))
             toast.success('Login Successfully')
-            navigate('/drive')
+            window.location.href = '/drive'
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
         }

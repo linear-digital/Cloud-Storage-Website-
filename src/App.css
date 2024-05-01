@@ -18,7 +18,8 @@
     background-color: black;
     border: 1px black;
 }
-.dot{
+
+.dot {
     width: 5px;
     height: 5px;
     background-color: rgb(57, 57, 57);
@@ -28,3 +29,50 @@
 ::-webkit-scrollbar {
     display: none;
 }
+
+.properties li{
+    margin-bottom: 10px;
+}
+.properties li p{
+    font-size: 15px;
+}
+.properties li p strong{
+    font-size: 15px;
+}
+.file-container {
+    /* display: grid;
+    grid-template-columns: repeat(8, 1fr); */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+/* 
+@media only screen and (max-width: 1300px) {
+    .file-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    }
+}
+@media only screen and (max-width: 1100px) {
+    .file-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .file-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+}
+@media only screen and (max-width: 500px) {
+    .file-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+} */

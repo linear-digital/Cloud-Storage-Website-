@@ -27,7 +27,7 @@ export default function Login() {
             const res = await api.post('/user/register', newUser)
             Cookie.set('authToken', res.data.token)
             toast.success('Signup Successfully')
-            navigate('/drive')
+            window.location.href = '/drive'
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
         }

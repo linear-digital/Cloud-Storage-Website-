@@ -9,9 +9,12 @@ import { useDispatch } from 'react-redux';
 import Loader from '../../../Components/Loader';
 import { Image } from 'antd';
 import { Checkbox } from '@mui/material';
+import { setSelectedFile } from '../../../redux/Slice/toolsSlice';
+import { useSelector } from 'react-redux';
 
 const FileCard = ({ data, refetch, mode, index, onClick, selected }) => {
     const dispatch = useDispatch()
+
     const [loading, setLoading] = React.useState(false)
     const deleteFile = async (id) => {
         try {
@@ -54,14 +57,24 @@ const FileCard = ({ data, refetch, mode, index, onClick, selected }) => {
             console.error('Error downloading file:', error);
         }
     }
+    const { selectedFile } = useSelector((state) => state.tools)
     if (loading) {
         return <Loader />
     }
     return (
-        <div className='flex w-full shadow-md rounded flex-col p-2'>
+        <div className={`flex lg:w-[180px] md:w-[140px] w-[150px] shadow-md rounded flex-col p-2 ${selectedFile?._id === data?._id ? "border-2 border-success" : ""} ${(selected && selectedFile?._id !== data?._id) && "border-2 border-primary"}`}
+            onClick={() => {
+                dispatch(setSelectedFile(data))
+            }}
+        >
             <div className='pb-2 flex items-center justify-between'>
-                <Checkbox color="warning" onChange={onClick} checked={selected} />;
-                <p className='text-xs'>
+                <Checkbox
+                    size='small'
+                    color="warning" onChange={() => {
+                        onClick()
+
+                    }} checked={selected} />
+                <p className='text-[12px] cursor-pointer'>
                     {data?.filename.slice(0, 8) + "...." + data?.extension}
                 </p>
                 <div className={`dropdown ${index !== 0 && "dropdown-end"}`}>

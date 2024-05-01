@@ -22,7 +22,7 @@ const Social = () => {
             })
             Cookie.set('authToken', res.data.token)
             toast.success('Login Successfully')
-            navigate('/drive')
+            window.location.href = '/drive'
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
         }
