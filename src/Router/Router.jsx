@@ -9,6 +9,7 @@ import Files from '../Pages/Drive/Files/Files'
 import AuthChecker from '../helper/authChecker'
 import Recent from '../Pages/Drive/Recent/Recent'
 import Folders from '../Pages/Drive/Folders/Folders'
+import Search from '../Pages/Drive/Search/Search'
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
           {
             path: 'folders',
             element: <Folders />
+          },
+          {
+            path: 'search',
+            element: <Search />
           },
           {
             path: 'recovery',

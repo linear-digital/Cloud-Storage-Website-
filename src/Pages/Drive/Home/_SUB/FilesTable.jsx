@@ -80,7 +80,23 @@ export function FilesTable() {
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
         }
     }
-    if (isLoading) {
+    const [loading, setLoading] = useState(false)
+    const deleteFiles = async () => {
+        const confirm = window.confirm("Are you sure you want to delete selected files?")
+        if (!confirm) return
+        setLoading(true)
+        try {
+            const res = await api.post('/file/update', { ids: selected.map((item) => item?._id), update: { deleted: true } })
+            refetch()
+            setLoading(false)
+            toast.success("File moved to bin successfully")
+            setSelected([])
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+            setLoading(false)
+        }
+    }
+    if (isLoading || loading) {
         return <Loader />
     }
     return (
@@ -89,7 +105,29 @@ export function FilesTable() {
                 <thead>
                     <tr>
                         <th className="border-b border-blue-gray-100 bg-white p-4">
-                            <Checkbox checked={selected.length === files?.data?.length} onChange={selectAll} />
+                            <div className="dropdown dropdown-hover">
+                                <div tabIndex={0} role="button"
+                                    className="flex gap-2 items-center"
+                                >
+                                    <Checkbox checked={selected.length === files?.data?.length} onChange={selectAll} />
+                                    {
+                                        selected.length > 0 &&
+                                        <p className="text-sm font-normal">
+                                            Selected {selected.length}
+                                        </p>
+                                    }
+                                </div>
+                                {
+                                    selected.length > 0 && <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                        <li>
+                                            <button 
+                                            onClick={deleteFiles}
+                                            className="btn btn-sm btn-error text-white">Delete Selected Files</button>
+                                        </li>
+                                    </ul>
+                                }
+                            </div>
+
                         </th>
                         {TABLE_HEAD.map((head) => (
                             <th key={head} className="border-b border-blue-gray-100 bg-white p-4">
