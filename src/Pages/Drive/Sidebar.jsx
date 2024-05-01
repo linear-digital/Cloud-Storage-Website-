@@ -26,6 +26,8 @@ import { Progress } from '@material-tailwind/react';
 import { useSelector } from 'react-redux';
 import { UploadDialog } from '../../Components/Dialog/UploadDialog';
 import { useLocation } from 'react-router-dom';
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { CreateFolder } from '../../Components/Dialog/CreateFolder';
 
 
 
@@ -77,6 +79,7 @@ const Sidebar = ({ hideSidebar }) => {
     const { user } = useSelector((state) => state.user)
     const location = useLocation()
     const [open, setOpen] = useState('')
+    const [show, setShow] = useState(false)
     const upgrade = () => {
 
     }
@@ -131,14 +134,38 @@ const Sidebar = ({ hideSidebar }) => {
                     ))
                 }
                 <li className='ml-8 mt-5'>
-                    <button
-                        onClick={() => setOpenUpload(true)}
-                        className='btn btn-primary rounded w-[200px]'>
-                        <FontAwesomeIcon icon={faPlus} width={20} height={20} />
-                        <span>Upload</span>
-                    </button>
+                    <div className="dropdown">
+                        <button
+                            tabIndex={0} role="button"
+                            className='btn btn-primary rounded w-[200px]'>
+                            <FontAwesomeIcon icon={faPlus} width={20} height={20} />
+                            <span>Upload</span>
+                        </button>
+                        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-[300px]">
+                            <li>
+                                <button
+                                    tabIndex={0} role="button"
+                                    onClick={() => setOpenUpload(true)}
+                                    className='btn btn-primary rounded w-full'>
+                                    <FontAwesomeIcon icon={faCloudArrowUp} width={20} height={20} />
+                                    <span>Upload Files</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    tabIndex={0} role="button"
+                                    onClick={() => setShow(true)}
+                                    className='btn bg-black text-white rounded w-full mt-2 hover:bg-black'>
+                                    <FontAwesomeIcon icon={faPlus} width={20} height={20} />
+                                    <span>Create New Folder</span>
+                                </button>
+                            </li>
+                            
+                        </ul>
+                    </div>
                 </li>
             </ul>
+            <CreateFolder open={show} setOpen={setShow} />
             <div className='pl-8 mt-5 pr-5'>
                 <div className="flex justify-between">
                     <div className="flex items-center gap-1">

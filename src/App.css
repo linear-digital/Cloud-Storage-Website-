@@ -13,6 +13,19 @@
     color: whitesmoke;
 }
 
+li .btn-primary:hover {
+    color: whitesmoke;
+    background-color: black;
+    border: 1px black;
+}
+
+
+li .btn:hover {
+    color: whitesmoke;
+    background-color: black;
+    border: 1px black;
+}
+
 .btn-primary:hover {
     color: whitesmoke;
     background-color: black;
@@ -30,15 +43,18 @@
     display: none;
 }
 
-.properties li{
+.properties li {
     margin-bottom: 10px;
 }
-.properties li p{
+
+.properties li p {
     font-size: 15px;
 }
-.properties li p strong{
+
+.properties li p strong {
     font-size: 15px;
 }
+
 .file-container {
     /* display: grid;
     grid-template-columns: repeat(8, 1fr); */
@@ -46,6 +62,7 @@
     flex-wrap: wrap;
     gap: 20px;
 }
+
 /* 
 @media only screen and (max-width: 1300px) {
     .file-container {

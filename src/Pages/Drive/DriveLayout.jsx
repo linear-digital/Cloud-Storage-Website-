@@ -26,17 +26,7 @@ const DriveLayout = () => {
             <section className='w-full'>
                 <TopNav />
                 <div className='w-full p-5'>
-                    <div className="flex justify-between">
-                        <h1 className='text-[20px] lg:block hidden font-semibold pb-5 pl-2'>
-                            File Manager
-                        </h1>
-                        <button
-                            onClick={() => setShow(!show)}
-                            className='btn btn-link text-base'>
-                            Create New Folder
-                        </button>
-                    </div>
-                    <CreateFolder open={show} setOpen={setShow} />
+                    
                     <div className="flex w-full h-screen overflow-hidden">
                         <div className='lg:block md:hidden hidden'>
                             <Sidebar />
