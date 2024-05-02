@@ -16,6 +16,8 @@ import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
 import { toast } from 'react-hot-toast';
 import { faTrashCanArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { ShareDialog } from '../../../Components/Dialog/ShareDialog';
+import { useParams } from 'react-router-dom';
 
 const Files = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
@@ -26,21 +28,30 @@ const Files = ({ mode }) => {
     const category = searchParams.get("category");
     const folder = searchParams.get("folder");
     const type = searchParams.get("type");
+    const params = useParams()
 
     const { data: files, isLoading, refetch } = useQuery({
         queryKey: ["files", user?._id, reloadFiles, mode, category],
         queryFn: async () => {
-            if (mode === "recovery") {
-                const { data } = await api.get(`/file/bin/${user?._id}`);
-                return data;
-            }
-            else {
-                const { data } = await api.get(`/file/user/${user?._id}?limit=500&category=${category || ""}`);
-                return data;
+            try {
+                if (mode === "recovery") {
+                    const { data } = await api.get(`/file/bin/${user?._id}`);
+                    return data?.files;
+                }
+                else if (mode === "shared") {
+                    const { data } = await api.get(`/share/${params?.id}`)
+                    console.log(data?.files)
+                    return { data: data?.files || [] }
+                }
+                else {
+                    const { data } = await api.get(`/file/user/${user?._id}?limit=500&category=${category || ""}`);
+                    return data;
+                }
+            } catch (error) {
+                return { data: [] }
             }
 
         },
-        enabled: !!user
     });
 
     const [selected, setSelected] = useState([]);
@@ -127,6 +138,7 @@ const Files = ({ mode }) => {
             setLoading(false)
         }
     }
+    const [share, setShare] = useState(false)
     // console.log(selected.length)
     if (isLoading || loading) {
         return <Loader />
@@ -134,70 +146,84 @@ const Files = ({ mode }) => {
     return (
         <div className='w-full lg:px-5'>
             {
+                share && <ShareDialog open={share} setOpen={setShare} selected={selected} />
+            }
+            {
                 openDownload && <DownloadDialog open={openDownload} setOpen={setOpenDownload} selected={selected} />
             }
-            <h1 className='text-xl font-semibold'>{
-                category ? <span className='capitalize'>
-                    {name}
-                </span> : "All FIles"
-            }</h1>
-            <div className="flex gap-5 items-center">
-                <div className="flex items-center">
-                    <Checkbox
-                        checked={selected.length === files?.data?.length}
-                        onChange={() => {
-                            if (selected.length === files?.data?.length) {
-                                setSelected([])
-                            }
-                            else {
-                                setSelected(files?.data)
-                            }
-                        }}
-                        color="warning" size='small' />
-                    <h5 className="ml-2 text-sm">
-                        <span className=' mr-1'>
-                            {selected.length}
-                        </span>
-                        Selected
-                    </h5>
-                </div>
+            {
+                mode !== "shared" &&
+                <h1 className='text-xl font-semibold'>{
+                    category ? <span className='capitalize'>
+                        {name}
+                    </span> : "All FIles"
+                }</h1>}
+            {
+                <div className={`flex gap-5 items-center ${mode === "shared" && "mt-5"}`}>
+                    <div className="flex items-center">
+                        <Checkbox
+                            checked={selected.length === files?.data?.length}
+                            onChange={() => {
+                                if (selected.length === files?.data?.length) {
+                                    setSelected([])
+                                }
+                                else {
+                                    setSelected(files?.data)
+                                }
+                            }}
+                            color="warning" size='small' />
+                        <h5 className="ml-2 text-sm">
+                            <span className=' mr-1'>
+                                {selected.length}
+                            </span>
+                            Selected
+                        </h5>
+                    </div>
 
-                {
-                    mode === "recovery" ?
-                        selected.length > 0 &&
-                        <div className='flex gap-5 items-center'>
-                            <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
-                                onClick={deletePermanently}
-                            >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                                <span className='text-sm ml-1'>Empty Bin</span>
-                            </button>
-                            <button className='text-[16px] hover:text-green-600 mt-1 ' title='Move to Trash'
-                                onClick={restoreFiles}
-                            >
-                                <FontAwesomeIcon icon={faTrashCanArrowUp} />
-                                <span className='text-sm ml-1'>Restore</span>
-                            </button>
-                        </div>
-                        :
-                        selected.length > 0 &&
-                        <div className='flex gap-5'>
-                            <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
-                                onClick={deleteFiles}
-                            >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                            </button>
-                            <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'>
-                                <FontAwesomeIcon icon={faUserPlus} />
-                            </button>
-                            <button
-                                onClick={() => setOpenDownload(true)}
-                                className='text-[16px] hover:text-primary mt-1 ' title='Share Link'>
-                                <FontAwesomeIcon icon={faDownload} />
-                            </button>
-                        </div>
-                }
-            </div>
+                    {
+                        mode === "recovery" ?
+                            selected.length > 0 &&
+                            <div className='flex gap-5 items-center'>
+                                <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
+                                    onClick={deletePermanently}
+                                >
+                                    <FontAwesomeIcon icon={faTrashCan} />
+                                    <span className='text-sm ml-1'>Empty Bin</span>
+                                </button>
+                                <button className='text-[16px] hover:text-green-600 mt-1 ' title='Move to Trash'
+                                    onClick={restoreFiles}
+                                >
+                                    <FontAwesomeIcon icon={faTrashCanArrowUp} />
+                                    <span className='text-sm ml-1'>Restore</span>
+                                </button>
+                            </div>
+                            :
+                            selected.length > 0 &&
+                            <div className='flex gap-5'>
+                                {
+                                    mode !== "shared" &&
+                                    <>
+                                        <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
+                                            onClick={deleteFiles}
+                                        >
+                                            <FontAwesomeIcon icon={faTrashCan} />
+                                        </button>
+                                        <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'
+                                            onClick={() => setShare(true)}
+                                        >
+                                            <FontAwesomeIcon icon={faUserPlus} />
+                                        </button>
+                                    </>
+                                }
+                                <button
+                                    onClick={() => setOpenDownload(true)}
+                                    className='text-[16px] hover:text-primary mt-1 ' title='Share Link'>
+                                    <FontAwesomeIcon icon={faDownload} />
+                                </button>
+                            </div>
+                    }
+                </div>
+            }
             <div className={`${files?.data?.length > 0 && "file-container"} lg:mt-10 mt-5`}>
                 {
                     files?.data?.length > 0 ?

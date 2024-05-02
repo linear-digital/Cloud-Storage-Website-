@@ -10,6 +10,8 @@ import AuthChecker from '../helper/authChecker'
 import Recent from '../Pages/Drive/Recent/Recent'
 import Folders from '../Pages/Drive/Folders/Folders'
 import Search from '../Pages/Drive/Search/Search'
+import Settings from '../Pages/Drive/Settings/Settings'
+import Profile from '../Pages/Drive/Settings/Profile'
 
 const router = createBrowserRouter([
   {
@@ -48,10 +50,24 @@ const router = createBrowserRouter([
           {
             path: 'recovery',
             element: <Files mode={"recovery"} />
+          },
+          {
+            path: "settings",
+            element: <Settings />,
+            children: [
+              {
+                index: true,
+                element: <Profile />
+              }
+            ]
           }
         ]
       },
     ]
+  },
+  {
+    path: '/shared/:id',
+    element: <Files mode={"shared"}/>
   },
   {
     path: '/login',

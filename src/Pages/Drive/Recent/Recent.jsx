@@ -16,6 +16,7 @@ import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
 import { toast } from 'react-hot-toast';
 import FileCard from '../Files/FileCard';
 import RecentFolderCard from '../../../Components/Card/RecentFolderCard';
+import { ShareDialog } from '../../../Components/Dialog/ShareDialog';
 
 const Recent = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
@@ -88,12 +89,16 @@ const Recent = ({ mode }) => {
             setLoading(false)
         }
     }
+    const [share, setShare] = useState(false)
     // console.log(selected.length)
     if (isLoading || loading) {
         return <Loader />
     }
     return (
         <div className='w-full lg:px-5'>
+            {
+                share && <ShareDialog open={share} setOpen={setShare} selected={selected} />
+            }
             {
                 openDownload && <DownloadDialog open={openDownload} setOpen={setOpenDownload} selected={selected} />
             }
@@ -140,7 +145,9 @@ const Recent = ({ mode }) => {
                             >
                                 <FontAwesomeIcon icon={faTrashCan} />
                             </button>
-                            <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'>
+                            <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'
+                                onClick={() => setShare(true)}
+                            >
                                 <FontAwesomeIcon icon={faUserPlus} />
                             </button>
                             <button

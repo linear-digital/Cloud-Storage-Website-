@@ -99,14 +99,18 @@ const FileCard = ({ data, refetch, mode, index, onClick, selected }) => {
                                         onClick={() => dowloadFile(data?._id)}
                                         className="text-primary">Dowload</button>
                                 </li>
-                                <li>
-                                    <button className="text-primary">Edit</button>
-                                </li>
-                                <li>
-                                    <button
-                                        onClick={() => deleteFile(data?._id)}
-                                        className="text-error">Delete</button>
-                                </li>
+                                {
+                                    mode !== 'shared' && <>
+                                        <li>
+                                            <button className="text-primary">Edit</button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                onClick={() => deleteFile(data?._id)}
+                                                className="text-error">Delete</button>
+                                        </li>
+                                    </>
+                                }
                             </ul>
                     }
 

@@ -14,6 +14,7 @@ import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
 import { toast } from 'react-hot-toast';
 import FileCard from '../Files/FileCard';
 import RecentFolderCard from '../../../Components/Card/RecentFolderCard';
+import { ShareDialog } from '../../../Components/Dialog/ShareDialog';
 
 const Folders = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
@@ -112,6 +113,7 @@ const Folders = ({ mode }) => {
             setLoading(false)
         }
     }
+    const [share, setShare] = useState(false)
     // console.log(selected.length)
     if (isLoading || loading || isFolderLoading || isSubFolderLoading) {
         return <Loader />
@@ -120,6 +122,9 @@ const Folders = ({ mode }) => {
         <div className='w-full lg:px-5'>
             {
                 openDownload && <DownloadDialog open={openDownload} setOpen={setOpenDownload} selected={selected} />
+            }
+            {
+                share && <ShareDialog open={share} setOpen={setShare} selected={selected} />
             }
             <h1 className='text-xl font-semibold'>{
                 files?.folder?.name
@@ -165,7 +170,9 @@ const Folders = ({ mode }) => {
                                 >
                                     <FontAwesomeIcon icon={faTrashCan} />
                                 </button>
-                                <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'>
+                                <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'
+                                onClick={() => setShare(true)}
+                                >
                                     <FontAwesomeIcon icon={faUserPlus} />
                                 </button>
                                 <button

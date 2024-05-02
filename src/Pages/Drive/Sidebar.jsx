@@ -66,7 +66,7 @@ const links = [
     {
         name: "Settings",
         icon: faGear,
-        // path: "/drive/settings"
+        path: "/drive/settings"
     }
 ]
 
