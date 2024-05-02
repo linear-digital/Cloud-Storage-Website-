@@ -1,7 +1,9 @@
 import { faUser } from '@fortawesome/free-regular-svg-icons';
+import { faUsers } from '@fortawesome/free-solid-svg-icons';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -18,13 +20,32 @@ const links = [
     }
 ]
 
+const linksAdmin = [
+    {
+        name: "Profile",
+        icon: faUser,
+        path: "/drive/settings"
+    },
+    {
+        name: "Password",
+        icon: faKey,
+        path: "/drive/settings/password"
+    },
+    {
+        name: "Users",
+        icon: faUsers,
+        path: "/drive/settings/users"
+    }
+]
+
 const Sidebar = ({ setShowSidebar }) => {
+    const { user } = useSelector((state) => state.user)
     const location = useLocation()
     return (
         <div className='min-w-[250px] max-w-[250px] shadow h-[500px]  mt-5 rounded bg-white'>
             <ul className='mt-5'>
                 {
-                    links.map((link, index) => (
+                    (user?.role === "admin" ? linksAdmin : links).map((link, index) => (
                         <li key={index} style={{ marginBottom: "10px" }}>
                             <Link
                                 onClick={() => setShowSidebar && setShowSidebar(false)}

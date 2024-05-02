@@ -3,67 +3,142 @@ import {
     Button,
     Dialog,
     Card,
-    CardHeader,
     CardBody,
     CardFooter,
     Typography,
     Input,
-    Checkbox,
 } from "@material-tailwind/react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-regular-svg-icons";
+import toast from "react-hot-toast";
+import { api } from "../axios/api";
+import { message } from "antd";
 
-export default function UpdateDialog({ open, setOpen }) {
-
+export default function UpdateDialog({ open, setOpen, user, refetch }) {
+    const [mode, setMode] = useState("info");
     const handleOpen = () => setOpen((cur) => !cur);
-
+    const [info, setInfo] = useState({
+        name: user?.name,
+        email: user?.email,
+        password: "",
+    })
+    const updateProfile = async () => {
+        try {
+            if (mode === "info") {
+                const res = await api.put(`/user/${user?._id}`, {
+                    name: info?.name,
+                })
+            }
+            else if (mode === "password") {
+                if (!info.password) {
+                    return message.error("Password is required")
+                }
+                const res = await api.put(`/user/password-update/${user?._id}`, {
+                    password: info?.password
+                })
+            }
+            toast.success("Profile updated successfully")
+            setOpen(false)
+            refetch()
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+        }
+    }
+    const [showPassword, setShowPassword] = useState(false)
+    useEffect(() => {
+        setInfo(user)
+    }, [user])
     return (
         <>
             <Dialog
-                size="xs"
+                size="sm"
                 open={open}
                 handler={handleOpen}
                 className="bg-transparent shadow-none"
             >
                 <Card className="mx-auto w-full max-w-[24rem]">
-                    <CardBody className="flex flex-col gap-4">
-                        <Typography variant="h4" color="blue-gray">
-                            Sign In
-                        </Typography>
-                        <Typography
-                            className="mb-3 font-normal"
-                            variant="paragraph"
-                            color="gray"
-                        >
-                            Enter your email and password to Sign In.
-                        </Typography>
-                        <Typography className="-mb-2" variant="h6">
-                            Your Email
-                        </Typography>
-                        <Input label="Email" size="lg" />
-                        <Typography className="-mb-2" variant="h6">
-                            Your Password
-                        </Typography>
-                        <Input label="Password" size="lg" />
-                        <div className="-ml-2.5 -mt-3">
-                            <Checkbox label="Remember Me" />
-                        </div>
-                    </CardBody>
+                    {
+                        mode === "info" ?
+                            <CardBody className="flex flex-col gap-4">
+                                <Typography variant="h4" color="blue-gray">
+                                    Update Account
+                                </Typography>
+                                {
+                                    user?.provider === "password" &&
+                                    <button
+                                        onClick={() => setMode("password")}
+                                        className="btn btn-link">
+                                        Change Password
+                                    </button>
+                                }
+                                <Typography className="-mb-2" variant="h6">
+                                    Your Email
+                                </Typography>
+                                <Input
+                                    disabled
+                                    value={user?.email}
+                                    label="Email"
+                                    size="lg"
+                                />
+                                <Typography className="-mb-2" variant="h6">
+                                    Name
+                                </Typography>
+                                <Input
+                                    value={info?.name}
+                                    label="Name"
+                                    size="lg"
+                                    onChange={(e) => setInfo((cur) => ({ ...cur, name: e.target.value }))}
+                                />
+                            </CardBody>
+                            :
+                            <CardBody className="flex flex-col gap-4">
+                                <Typography variant="h4" color="blue-gray">
+                                    Update Account
+                                </Typography>
+                                <button
+                                    onClick={() => setMode("info")}
+                                    className="btn btn-link">
+                                    Update Info
+                                </button>
+                                <Typography className="-mb-2" variant="h6">
+                                    Your Email
+                                </Typography>
+                                <Input
+                                    name="email"
+                                    disabled
+                                    value={user?.email}
+                                    label="Email"
+                                    size="lg"
+                                />
+                                <Typography className="-mb-2" variant="h6">
+                                    Password
+                                </Typography>
+                                <Input
+                                    name="password"
+                                    value={info?.password}
+                                    label="Password"
+                                    size="lg"
+                                    onChange={(e) => setInfo((cur) => ({ ...cur, password: e.target.value }))}
+                                    type={showPassword ? "text" : "password"}
+                                    icon={
+                                        <FontAwesomeIcon
+                                            onClick={() => setShowPassword((cur) => !cur)}
+                                            icon={faEye}
+                                        />
+                                    }
+                                />
+                            </CardBody>
+                    }
+
                     <CardFooter className="pt-0">
-                        <Button variant="gradient" onClick={handleOpen} fullWidth>
-                            Sign In
+                        <Button variant="gradient" onClick={updateProfile} fullWidth>
+                            Update
                         </Button>
-                        <Typography variant="small" className="mt-4 flex justify-center">
-                            Don&apos;t have an account?
-                            <Typography
-                                as="a"
-                                href="#signup"
-                                variant="small"
-                                color="blue-gray"
-                                className="ml-1 font-bold"
-                                onClick={handleOpen}
-                            >
-                                Sign up
-                            </Typography>
-                        </Typography>
+                        <button className="btn btn-link mt-3 float-end" onClick={handleOpen}>
+                            Close
+                        </button>
                     </CardFooter>
                 </Card>
             </Dialog>

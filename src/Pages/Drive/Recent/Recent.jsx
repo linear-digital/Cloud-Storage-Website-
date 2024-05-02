@@ -25,8 +25,7 @@ const Recent = ({ mode }) => {
 
     const searchParams = new URLSearchParams(location.search);
     const category = searchParams.get("category");
-    const folder = searchParams.get("folder");
-    const type = searchParams.get("type");
+
 
     const { data: folders, isLoading: isFolderLoading } = useQuery({
         queryKey: ["folders", user?._id, reloadFolder],

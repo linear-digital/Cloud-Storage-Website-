@@ -14,6 +14,7 @@ import Settings from '../Pages/Drive/Settings/Settings'
 import Profile from '../Pages/Drive/Settings/Profile'
 import Shared from '../Pages/Drive/Shared/Shared'
 import Password from '../Pages/Drive/Settings/Password'
+import Users from '../Pages/Drive/Settings/Users'
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
               {
                 path: "password",
                 element: <Password />
+              },
+              {
+                path: "users",
+                element: <Users />
               }
             ]
           }
