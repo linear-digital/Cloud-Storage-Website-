@@ -12,6 +12,7 @@ import Cookie from 'js-cookie';
 import { useDispatch } from "react-redux";
 import { setReloadFiles, setReloadUser } from "../../redux/Slice/reloadSlice";
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 const { Dragger } = Upload;
 export function UploadDialog({ open, setOpen }) {
     const dispatch = useDispatch()
@@ -21,7 +22,7 @@ export function UploadDialog({ open, setOpen }) {
     const location = useLocation()
     const searchParams = new URLSearchParams(location.search);
     const folder = searchParams.get('folder')
-
+    const [error, setError] = useState("")
     const props = {
         name: 'file',
         action: 'http://localhost:4500/api/file/upload',
@@ -37,11 +38,13 @@ export function UploadDialog({ open, setOpen }) {
             }
             if (info.file.status === 'done') {
                 // setPercent(100);
-                dispatch(setReloadFiles(info.file))
-                dispatch(setReloadUser(info.file))
+
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
+                setError(info.fileList[0]?.response?.message)
             }
+            dispatch(setReloadFiles(info.file))
+            dispatch(setReloadUser(info.file))
         },
         progress: {
             strokeColor: {
@@ -58,6 +61,7 @@ export function UploadDialog({ open, setOpen }) {
             <Dialog open={open} handler={handleOpen}>
                 <DialogHeader>Upload Files</DialogHeader>
                 <DialogBody >
+                    {error && <p className="text-red-500  pb-4">{error}</p>}
                     <Dragger {...props} multiple>
                         <p className="ant-upload-drag-icon">
                             <InboxOutlined />

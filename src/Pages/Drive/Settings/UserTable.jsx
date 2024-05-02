@@ -14,37 +14,25 @@ const TABLE_HEAD = ["User", "Role", "Created", "Actions"];
 
 
 export default function UserTable({ users, refetch }) {
-    const [selected, setSelected] = useState([]);
+    const [selected, setSelected] = useState({});
     const selecOne = (user) => {
-        if (selected?.filter((item) => item?._id === user?._id).length > 0) {
-            setSelected(selected?.filter((item) => item?._id !== user?._id));
-        }
-        else {
-            setSelected([...selected, user]);
-        }
+        setSelected(user)
     }
+
+    const [mode, setMode] = useState("info");
     const [open, setOpen] = useState(false)
-    const [user, setUser] = useState(null)
+
     return (
         <Card className="max-h-screen w-full overflow-scroll">
-            <UpdateDialog open={open} setOpen={setOpen} user={user}
-            refetch={refetch}
+            <UpdateDialog open={open} setOpen={setOpen} user={selected}
+                refetch={refetch} mode={mode} setMode={setMode}
             />
             <table className="w-full min-w-max table-auto text-left">
                 <thead>
 
                     <tr>
                         <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                            <Checkbox
-                                onChange={() => {
-                                    if (selected?.length === users?.length) {
-                                        setSelected([]);
-                                    } else {
-                                        setSelected(users);
-                                    }
-                                }}
-                                checked={selected?.length === users?.length}
-                            />
+
                         </th>
                         {TABLE_HEAD.map((head) => (
                             <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
@@ -65,7 +53,7 @@ export default function UserTable({ users, refetch }) {
                             <td className="p-4">
                                 <Checkbox
                                     onChange={() => selecOne(user)}
-                                    checked={selected?.filter((item) => item?._id === user?._id).length > 0}
+                                    checked={selected?._id === user?._id}
                                 />
                             </td>
                             <td>
@@ -86,16 +74,23 @@ export default function UserTable({ users, refetch }) {
                             </td>
                             <td className="p-4">
                                 <div className="flex gap-5">
-                                    <button 
-                                    onClick={() => {
-                                        setOpen(true)
-                                        setUser(user)
-                                    }}
-                                    className="hover:text-primary">
+                                    <button
+                                        onClick={() => {
+                                            setOpen(true)
+                                            setMode("info")
+                                            setSelected(user)
+                                        }}
+                                        className="hover:text-primary">
                                         <FontAwesomeIcon icon={faPen} />
                                     </button>
 
-                                    <button className="hover:text-red-500">
+                                    <button className="hover:text-red-500"
+                                        onClick={() => {
+                                            setOpen(true)
+                                            setMode("delete")
+                                            setSelected(user)
+                                        }}
+                                    >
                                         <FontAwesomeIcon icon={faTrash} />
                                     </button>
                                 </div>

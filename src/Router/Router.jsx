@@ -60,7 +60,9 @@ const router = createBrowserRouter([
           },
           {
             path: "settings",
-            element: <Settings />,
+            element: <AuthChecker>
+              <Settings />
+            </AuthChecker>,
             children: [
               {
                 index: true,
@@ -82,7 +84,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/shared/:id',
-    element: <Files mode={"shared"}/>
+    element: <Files mode={"shared"} />
   },
   {
     path: '/login',

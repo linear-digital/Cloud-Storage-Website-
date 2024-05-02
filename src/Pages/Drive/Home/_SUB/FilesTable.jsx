@@ -49,12 +49,17 @@ export function FilesTable() {
     const { data: files, isLoading, refetch } = useQuery({
         queryKey: ["files", user?._id, reloadFiles],
         queryFn: async () => {
-            const { data } = await api.get(`/file/user/${user?._id}`);
-            return data;
+            if (user?.role === "admin") {
+                const data  = await api.get(`/file`);
+                return data;
+            }
+            else {
+                const { data } = await api.get(`/file/user/${user?._id}`);
+                return data;
+            }
         },
     });
     const dispatch = useDispatch()
-    console.log(selected)
     const selectAll = () => {
         if (selected.length === files?.data?.length) {
             setSelected([]);
@@ -120,9 +125,9 @@ export function FilesTable() {
                                 {
                                     selected.length > 0 && <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                         <li>
-                                            <button 
-                                            onClick={deleteFiles}
-                                            className="btn btn-sm btn-error text-white">Delete Selected Files</button>
+                                            <button
+                                                onClick={deleteFiles}
+                                                className="btn btn-sm btn-error text-white">Delete Selected Files</button>
                                         </li>
                                     </ul>
                                 }

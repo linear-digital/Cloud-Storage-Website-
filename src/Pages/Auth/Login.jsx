@@ -18,6 +18,7 @@ import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/Slice/userSlice';
+import { message } from 'antd';
 export default function Login() {
     const token = Cookie.get('authToken')
     const navigate = useNavigate();
@@ -30,10 +31,10 @@ export default function Login() {
             const res = await api.post('/user/login', { ...data, provider: "password" })
             Cookie.set('authToken', res.data.token)
             dispatch(setUser(res.data.user))
-            toast.success('Login Successfully')
+            message.success('Login Successfully')
             window.location.href = '/drive'
         } catch (error) {
-            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+            message.error(error?.response?.data?.message || error.message || "Something went wrong")
         }
     }
     const [show, setShow] = useState(false)
