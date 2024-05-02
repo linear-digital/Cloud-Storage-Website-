@@ -15,27 +15,16 @@ import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
 import { toast } from 'react-hot-toast';
 import FileCard from '../Files/FileCard';
-import RecentFolderCard from '../../../Components/Card/RecentFolderCard';
 import { ShareDialog } from '../../../Components/Dialog/ShareDialog';
 
 const Shared = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
-    const { reloadFiles, reloadFolder } = useSelector((state) => state.reload)
+    const { reloadFiles } = useSelector((state) => state.reload)
     const location = useLocation()
 
     const searchParams = new URLSearchParams(location.search);
     const category = searchParams.get("category");
-    const folder = searchParams.get("folder");
-    const type = searchParams.get("type");
 
-    const { data: folders, isLoading: isFolderLoading } = useQuery({
-        queryKey: ["folders", user?._id, reloadFolder],
-        queryFn: async () => {
-            const { data } = await api.get(`/folder/user/${user?._id}`);
-            return data;
-        },
-        enabled: !!user
-    });
 
     const { data: files, isLoading, refetch } = useQuery({
         queryKey: ["files", user?._id, reloadFiles, mode, category],
@@ -64,7 +53,7 @@ const Shared = ({ mode }) => {
         if (!confirm) return
         setLoading(true)
         try {
-            const res = await api.post('/file/update', { ids: selected.map((item) => item?._id), id: user?._id })
+            const res = await api.post('/file/remove', { ids: selected.map((item) => item?._id), id: user?._id })
             refetch()
             setLoading(false)
             toast.success("File moved to bin successfully")
