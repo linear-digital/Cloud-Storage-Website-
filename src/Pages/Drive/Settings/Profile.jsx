@@ -74,6 +74,9 @@ const Profile = () => {
     return (
         <div>
             <h1 className='text-lg'>Update name and profile image</h1>
+            <h1 className='text-base mt-5'>
+                Email : {user?.email}
+            </h1>
             <form onSubmit={formHandeler} className='max-w-96 mt-5'>
                 <Input label="Name"
                     defaultValue={user?.name}

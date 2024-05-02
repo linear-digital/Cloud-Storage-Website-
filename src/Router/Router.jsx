@@ -13,6 +13,7 @@ import Search from '../Pages/Drive/Search/Search'
 import Settings from '../Pages/Drive/Settings/Settings'
 import Profile from '../Pages/Drive/Settings/Profile'
 import Shared from '../Pages/Drive/Shared/Shared'
+import Password from '../Pages/Drive/Settings/Password'
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <Profile />
+              },
+              {
+                path: "password",
+                element: <Password />
               }
             ]
           }
