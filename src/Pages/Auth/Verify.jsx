@@ -15,10 +15,12 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/Slice/userSlice';
 import { message } from 'antd';
 import { setReloadUser } from '../../redux/Slice/reloadSlice';
+import { useSelector } from 'react-redux';
 export default function Verify() {
+    const { user } = useSelector(state => state.user)
     const token = Cookie.get('authToken')
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const [code, setCode] = useState('')
     const formHandler = async (e) => {
         if (!code) {
@@ -37,6 +39,7 @@ export default function Verify() {
         try {
             const res = await api.post('/user/send-email')
             message.success(res.data.message)
+            dispatch(setReloadUser(res.data))
         } catch (error) {
             message.error(error?.response?.data?.message || error.message || "Something went wrong")
         }
@@ -50,33 +53,46 @@ export default function Verify() {
                 <Typography variant="h4" color="blue-gray">
                     Verify Your Email
                 </Typography>
-                <div className="mt-8 mb-2 w-full">
-                    <div className="mb-1 flex flex-col gap-6">
-                        <Typography variant="h6" color="blue-gray" className="-mb-3">
-                            Enter Code
-                        </Typography>
-                        <Input
-                            required
-                            size="lg"
-                            placeholder="Enter 6 digit code"
-                            label='Enter 6 digit code'
-                            onChange={(e) => setCode(e.target.value)}
-                            value={code}
-                        // labelProps={{
-                        //     className: "before:content-none after:content-none",
-                        // }}
-                        />
-                    </div>
-                    <div className='mt-2 btn btn-link'
-                        onClick={resendCode}
-                    >
-                        Don't receive the code?
-                    </div>
-                    <Button onClick={formHandler} type="submit" className="mt-3" fullWidth>
-                        Verify Account
-                    </Button>
+                {
+                    user?.isMailSent ?
+                        <div className="mt-8 mb-2 w-full">
+                            <div className="mb-1 flex flex-col gap-6">
+                                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                                    Enter Code
+                                </Typography>
+                                <Input
+                                    required
+                                    size="lg"
+                                    placeholder="Enter 6 digit code"
+                                    label='Enter 6 digit code'
+                                    onChange={(e) => setCode(e.target.value)}
+                                    value={code}
+                                // labelProps={{
+                                //     className: "before:content-none after:content-none",
+                                // }}
+                                />
+                            </div>
+                            <div className='mt-2 btn btn-link'
+                                onClick={resendCode}
+                            >
+                                Don't receive the code?
+                            </div>
+                            <Button onClick={formHandler} type="submit" className="mt-3" fullWidth>
+                                Verify Account
+                            </Button>
 
-                </div>
+                        </div>
+                        :
+                        <>
+                            <div className='mt-2 btn btn-primary'
+                                onClick={()=> {
+                                    resendCode()
+                                }}
+                            >
+                               Send Verification Mail
+                            </div>
+                        </>
+                }
             </Card>
         </section>
     );
