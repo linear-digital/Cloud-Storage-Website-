@@ -78,12 +78,12 @@ const linksAdmin = [
         path: "/drive"
     },
     {
-        name: "Files",
+        name: "All Files",
         icon: faFile,
         path: "/drive/files"
     },
     {
-        name: "Folders",
+        name: "All Folders",
         icon: faFolderOpen,
         path: "/drive/folders"
     },
@@ -104,13 +104,15 @@ const Sidebar = ({ hideSidebar }) => {
     const location = useLocation()
     const [open, setOpen] = useState('')
     const [show, setShow] = useState(false)
-   
+
     const [openUpload, setOpenUpload] = useState(false)
     return (
         <div className='w-[320px] bg-white h-full overflow-y-auto py-5 rounded'
             onClick={hideSidebar}
         >
-            <h1 className='text-2xl text-center font-semibold text-primary mb-5'>Admin</h1>
+            {
+                user?.role === "admin" && <h1 className='text-2xl text-center font-semibold text-primary mb-5'>Admin</h1>
+            }
             <UploadDialog open={openUpload} setOpen={setOpenUpload} />
             <ul className=''>
                 {
@@ -182,7 +184,7 @@ const Sidebar = ({ hideSidebar }) => {
                                     <span>Create New Folder</span>
                                 </button>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </li>

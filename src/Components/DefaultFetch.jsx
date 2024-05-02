@@ -18,17 +18,16 @@ const DefaultFetch = () => {
         if (token) {
             (async () => {
                 try {
-                    if (token) {
-                        const user = await api.get('/user/me')
-                        dispatch(setUser(user.data || null))
-                    }
-                    else {
-                        dispatch(setUser(undefined))
-                    }
+                    const user = await api.get('/user/me')
+                    dispatch(setUser(user.data))
+
                 } catch (error) {
                     console.error(error)
                 }
             })()
+        }
+        else {
+            dispatch(setUser(undefined))
         }
     }, [token, number, reloadUser])
     // increase number every 5 seconds

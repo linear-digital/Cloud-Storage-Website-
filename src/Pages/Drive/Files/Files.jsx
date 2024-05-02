@@ -36,7 +36,7 @@ const Files = ({ mode }) => {
             try {
                 if (mode === "recovery") {
                     const { data } = await api.get(`/file/bin/${user?._id}`);
-                    return data?.files;
+                    return { data: data?.data || [] };
                 }
                 else if (mode === "shared") {
                     const { data } = await api.get(`/share/${params?.id}`)
@@ -155,8 +155,8 @@ const Files = ({ mode }) => {
                 mode !== "shared" &&
                 <h1 className='text-xl font-semibold'>{
                     category ? <span className='capitalize'>
-                        {name}
-                    </span> : "All FIles"
+                        {name} (${files?.data?.length || 0})
+                    </span> : `All FIles (${files?.data?.length || 0})`
                 }</h1>}
             {
                 <div className={`flex gap-5 items-center ${mode === "shared" && "mt-5"}`}>
