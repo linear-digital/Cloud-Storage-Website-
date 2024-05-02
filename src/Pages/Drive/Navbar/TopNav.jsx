@@ -24,11 +24,13 @@ const TopNav = () => {
     const links = [
         {
             name: "My Files",
-            icon: faFolderOpen
+            icon: faFolderOpen,
+            Path: "/drive/files"
         },
         {
             name: "Account Settings",
             icon: faGear,
+            Path: "/drive/settings"
         },
     ]
     const handleToogle = () => {
@@ -63,7 +65,7 @@ const TopNav = () => {
                                 links.map((link, index) => {
                                     return (
                                         <li key={index}>
-                                            <Link className="justify-start gap-3 items-center text-base flex" to={'/'}>
+                                            <Link className="justify-start gap-3 items-center text-base flex" to={link.Path}>
                                                 <FontAwesomeIcon icon={link.icon} width={20} height={20} />
                                                 {link.name}
                                             </Link>

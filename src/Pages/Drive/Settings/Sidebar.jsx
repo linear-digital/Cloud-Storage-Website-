@@ -25,7 +25,7 @@ const Sidebar = () => {
             <ul className='mt-5'>
                 {
                     links.map((link, index) => (
-                        <li style={{ marginBottom: "10px" }}>
+                        <li key={index} style={{ marginBottom: "10px" }}>
                             <Link to={link.path} className={`flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-primary font-semibold w-full pl-8  text-blue-gray-700 hover:text-white ${location.pathname === link.path ? 'bg-primary text-white shadow' : ''}`}>
                                 <FontAwesomeIcon icon={link.icon} width={20} height={20} />
                                 <span>
