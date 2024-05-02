@@ -13,10 +13,13 @@ import { useSelector } from 'react-redux';
 import { faBarsStaggered } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch } from 'react-redux';
 import { setShowSidebar } from '../../../redux/Slice/toolsSlice';
+import Avater from '../../../Components/Card/Avater';
+import { imageurl } from '../../../helper/imageUrl';
 
 
 const TopNav = () => {
     const { showSidebar } = useSelector(state => state.tools)
+    const { user } = useSelector(state => state.user)
     const dispatch = useDispatch()
     const links = [
         {
@@ -51,7 +54,7 @@ const TopNav = () => {
                         <div tabIndex={0} role="button" className="m-1 flex items-center justify-center">
                             <div className="avatar">
                                 <div className="w-9 rounded-full">
-                                    <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                                    <Avater width={"w-7"} height={"h-7"} src={imageurl(user?.picture)} />
                                 </div>
                             </div>
                         </div>
