@@ -12,6 +12,7 @@ import Folders from '../Pages/Drive/Folders/Folders'
 import Search from '../Pages/Drive/Search/Search'
 import Settings from '../Pages/Drive/Settings/Settings'
 import Profile from '../Pages/Drive/Settings/Profile'
+import Shared from '../Pages/Drive/Shared/Shared'
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
           {
             path: 'search',
             element: <Search />
+          },
+          {
+            path: 'shared',
+            element: <Shared />
           },
           {
             path: 'recovery',
