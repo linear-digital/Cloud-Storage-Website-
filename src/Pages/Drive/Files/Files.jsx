@@ -15,6 +15,7 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { DownloadDialog } from '../../../Components/Dialog/DownloadDialog';
 import { toast } from 'react-hot-toast';
+import { faTrashCanArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const Files = ({ mode }) => {
     const { user } = useSelector((state) => state.user)
@@ -96,6 +97,21 @@ const Files = ({ mode }) => {
             setLoading(false)
         }
     }
+    const restoreFiles = async () => {
+        const confirm = window.confirm("Are you sure you want to restore selected files?")
+        if (!confirm) return
+        setLoading(true)
+        try {
+            const res = await api.post('/file/update', { ids: selected.map((item) => item?._id), update: { deleted: false } })
+            refetch()
+            setLoading(false)
+            toast.success("File moved to bin successfully")
+            setSelected([])
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+            setLoading(false)
+        }
+    }
     const deletePermanently = async () => {
         const confirm = window.confirm("Are you sure you want to delete selected files permanently?")
         if (!confirm) return
@@ -149,12 +165,18 @@ const Files = ({ mode }) => {
                 {
                     mode === "recovery" ?
                         selected.length > 0 &&
-                        <div className='flex gap-5'>
+                        <div className='flex gap-5 items-center'>
                             <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
                                 onClick={deletePermanently}
                             >
                                 <FontAwesomeIcon icon={faTrashCan} />
                                 <span className='text-sm ml-1'>Empty Bin</span>
+                            </button>
+                            <button className='text-[16px] hover:text-green-600 mt-1 ' title='Move to Trash'
+                                onClick={restoreFiles}
+                            >
+                                <FontAwesomeIcon icon={faTrashCanArrowUp} />
+                                <span className='text-sm ml-1'>Restore</span>
                             </button>
                         </div>
                         :

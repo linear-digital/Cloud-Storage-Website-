@@ -124,57 +124,59 @@ const Folders = ({ mode }) => {
             <h1 className='text-xl font-semibold'>{
                 files?.folder?.name
             }</h1>
-            <div className="flex gap-5 items-center">
-                <div className="flex items-center">
-                    <Checkbox
-                        checked={selected.length === files?.data?.length}
-                        onChange={() => {
-                            if (selected.length === files?.data?.length) {
-                                setSelected([])
-                            }
-                            else {
-                                setSelected(files?.data)
-                            }
-                        }}
-                        color="warning" size='small' />
-                    <h5 className="ml-2 text-sm">
-                        <span className=' mr-1'>
-                            {selected.length}
-                        </span>
-                        Selected
-                    </h5>
-                </div>
+            {
+                files?.data?.length > 0 && <div className="flex gap-5 items-center">
+                    <div className="flex items-center">
+                        <Checkbox
+                            checked={selected.length === files?.data?.length}
+                            onChange={() => {
+                                if (selected.length === files?.data?.length) {
+                                    setSelected([])
+                                }
+                                else {
+                                    setSelected(files?.data)
+                                }
+                            }}
+                            color="warning" size='small' />
+                        <h5 className="ml-2 text-sm">
+                            <span className=' mr-1'>
+                                {selected.length}
+                            </span>
+                            Selected
+                        </h5>
+                    </div>
 
-                {
-                    mode === "recovery" ?
-                        selected.length > 0 &&
-                        <div className='flex gap-5'>
-                            <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
-                                onClick={deletePermanently}
-                            >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                                <span className='text-sm ml-1'>Empty Bin</span>
-                            </button>
-                        </div>
-                        :
-                        selected.length > 0 &&
-                        <div className='flex gap-5'>
-                            <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
-                                onClick={deleteFiles}
-                            >
-                                <FontAwesomeIcon icon={faTrashCan} />
-                            </button>
-                            <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'>
-                                <FontAwesomeIcon icon={faUserPlus} />
-                            </button>
-                            <button
-                                onClick={() => setOpenDownload(true)}
-                                className='text-[16px] hover:text-primary mt-1 ' title='Share Link'>
-                                <FontAwesomeIcon icon={faDownload} />
-                            </button>
-                        </div>
-                }
-            </div>
+                    {
+                        mode === "recovery" ?
+                            selected.length > 0 &&
+                            <div className='flex gap-5'>
+                                <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
+                                    onClick={deletePermanently}
+                                >
+                                    <FontAwesomeIcon icon={faTrashCan} />
+                                    <span className='text-sm ml-1'>Empty Bin</span>
+                                </button>
+                            </div>
+                            :
+                            selected.length > 0 &&
+                            <div className='flex gap-5'>
+                                <button className='text-[16px] hover:text-red-600 mt-1 ' title='Move to Trash'
+                                    onClick={deleteFiles}
+                                >
+                                    <FontAwesomeIcon icon={faTrashCan} />
+                                </button>
+                                <button className='text-[16px] hover:text-green-600 mt-1 ' title='Share Link'>
+                                    <FontAwesomeIcon icon={faUserPlus} />
+                                </button>
+                                <button
+                                    onClick={() => setOpenDownload(true)}
+                                    className='text-[16px] hover:text-primary mt-1 ' title='Share Link'>
+                                    <FontAwesomeIcon icon={faDownload} />
+                                </button>
+                            </div>
+                    }
+                </div>
+            }
             {
                 typeof folder === "string" ?
                     <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-5 mt-5'>

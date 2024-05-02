@@ -12,6 +12,8 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { setReloaFolder, setReloadUser } from '../../redux/Slice/reloadSlice';
+import Loader from '../Loader';
+import { DownloadFolderDialog } from '../Dialog/DownloadFolderDialog';
 
 
 const RecentFolderCard = ({ data }) => {
@@ -29,12 +31,40 @@ const RecentFolderCard = ({ data }) => {
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
         }
     }
-    // if (isLoading) return null;
+    const [isLoading, setIsLoading] = useState(false)
+    const dowloadFile = async () => {
+        try {
+            setIsLoading(true)
+            const response = await api.get(`/folder/download/${data?._id}`, {
+                responseType: 'blob' // Ensure response is treated as binary data
+            });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${data?.name}.zip`);
+            document.body.appendChild(link);
+            link.click();
+            // Clean up the URL object after the download is complete
+            window.URL.revokeObjectURL(url);
+            setIsLoading(false)
+            toast.success("File downloaded successfully")
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
+            setIsLoading(false)
+        }
+    }
+    const [open, setOpen] = useState(false)
     const navigate = useNavigate();
+    if (isLoading) {
+        return <Loader />
+    }
     return (
         <div className='p-5 bg-white rounded w-full hover:shadow-xl shadow-blue-100 cursor-pointer'
             onDoubleClick={() => navigate(`/drive/folders?folder=${data?._id}`)}
         >
+            {
+                open && <DownloadFolderDialog open={open} setOpen={setOpen} folder={data} />
+            }
             <UpdateDialog open={show} setOpen={setShow} />
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
@@ -54,7 +84,7 @@ const RecentFolderCard = ({ data }) => {
                     <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                         <li>
                             <button
-                                onClick={() => dowloadFile(data?._id)}
+                                onClick={() => setOpen(true)}
                                 className="text-primary">Dowload</button>
                         </li>
                         <li>
