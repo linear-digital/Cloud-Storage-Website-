@@ -88,11 +88,6 @@ const linksAdmin = [
         path: "/drive/folders"
     },
     {
-        name: "Recovery",
-        icon: faTrashCan,
-        path: "/drive/recovery"
-    },
-    {
         name: "Settings",
         icon: faGear,
         path: "/drive/settings"
