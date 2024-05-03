@@ -203,7 +203,7 @@ const Folders = ({ mode }) => {
                     </div>
             }
             {
-                folder !== null && <div className={`${files?.data?.length > 0 && "file-container"} lg:mt-10 mt-5`}>
+                folder !== null && <div className={`${files?.data?.length > 0 && "file-container justify-center"} lg:mt-10 mt-5`}>
                     {
                         files?.data?.length > 0 ?
                             files?.data?.map((file, index) => (
