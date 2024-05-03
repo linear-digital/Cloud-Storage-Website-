@@ -78,6 +78,18 @@ const RecentFolderCard = ({ data }) => {
                                 {
                                     label: <button
                                         onClick={() => {
+                                            navigate(`/drive/folders?folder=${data?._id}`)
+                                        }}
+                                        className="text-primary w-[150px]">
+                                        <FontAwesomeIcon icon={faFolderOpen}
+                                            className='mr-2'
+                                        />
+                                        Open Folder
+                                    </button>,
+                                    key: '42g',
+                                }, {
+                                    label: <button
+                                        onClick={() => {
                                             setCopy(true)
                                             setMode("copy")
                                         }}
