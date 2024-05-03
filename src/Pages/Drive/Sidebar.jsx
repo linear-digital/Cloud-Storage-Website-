@@ -103,7 +103,7 @@ const Sidebar = ({ hideSidebar }) => {
     const [openUpload, setOpenUpload] = useState(false)
     return (
         <div className='w-[320px] bg-white h-full overflow-y-auto py-5 rounded'
-            onClick={hideSidebar}
+
         >
             {
                 user?.role === "admin" && <h1 className='text-2xl text-center font-semibold text-primary mb-5'>Admin</h1>
@@ -114,7 +114,9 @@ const Sidebar = ({ hideSidebar }) => {
                     (user?.role === "admin" ? linksAdmin : links).map((link, index) => (
                         <li key={index} className='' >
                             <div className='flex items-center'>
-                                <Link to={link.path} className={`flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-black font-semibold w-full pl-8  text-blue-gray-700 hover:text-white ${location.pathname === link.path ? 'bg-black text-white shadow' : ''}`}>
+                                <Link
+                                    onClick={hideSidebar}
+                                    to={link.path} className={`flex items-center gap-5 text-[16px] leading-6 py-3 hover:bg-black font-semibold w-full pl-8  text-blue-gray-700 hover:text-white ${location.pathname === link.path ? 'bg-black text-white shadow' : ''}`}>
                                     <FontAwesomeIcon icon={link.icon} width={20} height={20} />
                                     <span>
                                         {link.name}
@@ -136,7 +138,9 @@ const Sidebar = ({ hideSidebar }) => {
                                     <ul>
                                         {
                                             link.children.map((child, index) => (
-                                                <li key={index} className='pl-14 hover:bg-gray-100 '>
+                                                <li key={index} 
+                                                onClick={hideSidebar}
+                                                className='pl-14 hover:bg-gray-100 '>
                                                     <Link to="/drive" className='flex items-center gap-5 font-normal text-[17px] py-3'>
                                                         <FontAwesomeIcon icon={child.icon} width={20} height={20} />
                                                         <span>
@@ -164,7 +168,9 @@ const Sidebar = ({ hideSidebar }) => {
                             <li>
                                 <button
                                     tabIndex={0} role="button"
-                                    onClick={() => setOpenUpload(true)}
+                                    onClick={() => {
+                                        setOpenUpload(true)
+                                    }}
                                     className='btn btn-primary rounded w-full'>
                                     <FontAwesomeIcon icon={faCloudArrowUp} width={20} height={20} />
                                     <span>Upload Files</span>
@@ -173,7 +179,9 @@ const Sidebar = ({ hideSidebar }) => {
                             <li>
                                 <button
                                     tabIndex={0} role="button"
-                                    onClick={() => setShow(true)}
+                                    onClick={() => {
+                                        setShow(true)
+                                    }}
                                     className='btn bg-black text-white rounded w-full mt-2 hover:bg-black'>
                                     <FontAwesomeIcon icon={faPlus} width={20} height={20} />
                                     <span>Create New Folder</span>
