@@ -66,7 +66,7 @@ const RecentFolders = () => {
                         {
                             folders?.data?.map((folder, index) => (
                                 <SwiperSlide key={folder?._id || index}>
-                                    <RecentFolderCard data={folder} />
+                                    <RecentFolderCard data={folder} key={index}/>
                                 </SwiperSlide>
                             ))
                         }

@@ -15,12 +15,10 @@ import { useLocation } from 'react-router-dom';
 
 const DriveLayout = () => {
     const dispatch = useDispatch()
-    const [show, setShow] = useState(false)
     const { showSidebar, showFileInfo, selectedFile } = useSelector(state => state.tools)
     const location = useLocation()
     const hideSidebar = () => {
         dispatch(setShowSidebar(false))
-        console.log(showSidebar)
     }
     useEffect(() => {
         dispatch(setSelectedFile(null))

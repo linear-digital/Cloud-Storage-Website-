@@ -25,7 +25,7 @@ export function UploadDialog({ open, setOpen }) {
     const [error, setError] = useState("")
     const props = {
         name: 'file',
-        action: 'https://temp.mdtamiz.com/api/file/upload',
+        action: 'http://localhost:4500/api/file/upload',
         headers: {
             authorization: 'authorization-text',
             userid: user?._id,

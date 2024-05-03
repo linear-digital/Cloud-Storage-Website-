@@ -8,8 +8,8 @@ import { FilesTable } from './_SUB/FilesTable';
 
 const Home = () => {
     return (
-        <div className='px-5 w-full'>
-            <section className='flex gap-7 flex-wrap'>
+        <div className='lg:px-5 w-full'>
+            <section className='flex gap-7 flex-wrap lg:justify-start justify-center '>
                 {
                     icons.map((icon, index) => {
                         return (

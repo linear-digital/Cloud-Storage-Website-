@@ -105,8 +105,8 @@ export function FilesTable() {
         return <Loader />
     }
     return (
-        <Card className="h-auto w-full  mt-10 bg-white">
-            <table className="w-full min-w-max table-auto text-left">
+        <Card className="h-auto w-full  mt-10 bg-white overflow-auto">
+            <table className="w-full min-w-max table-auto  text-left">
                 <thead>
                     <tr>
                         <th className="border-b border-blue-gray-100 bg-white p-4">
@@ -149,7 +149,7 @@ export function FilesTable() {
                 </thead>
                 <tbody>
                     {files?.data?.map((file, index) => (
-                        <tr key={file?._id} className="even:bg-blue-gray-50/50">
+                        <tr key={file?._id} className="even:bg-blue-gray-50/50 text-sm">
                             <td className="p-4">
                                 <Checkbox checked={
                                     selected.filter((item) => item?._id === file?._id).length > 0
@@ -158,31 +158,31 @@ export function FilesTable() {
                                 />
                             </td>
                             <td className="p-4">
-                                <Typography variant="small" color="blue-gray" className="font-normal">
-                                    {file?.originalname}
+                                <Typography variant="small" color="blue-gray" className="font-normal text-xs">
+                                    {(file?.originalname).substr(-30)}
                                 </Typography>
                             </td>
                             <td className="p-4">
-                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                <Typography variant="small" color="blue-gray" className="font-normal text-xs">
                                     {file?.user?.name}
                                 </Typography>
                             </td>
                             <td className="p-4">
-                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                <Typography variant="small" color="blue-gray" className="font-normal text-xs" >
                                     {
                                         filesize(file?.size)
                                     }
                                 </Typography>
                             </td>
                             <td className="p-4">
-                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                <Typography variant="small" color="blue-gray" className="font-normal text-xs">
                                     {
                                         moment(file?.createdAt).format("MMM Do YY")
                                     }
                                 </Typography>
                             </td>
                             <td className="p-4">
-                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                <Typography variant="small" color="blue-gray" className="font-normal text-xs">
                                     {
                                         moment(file?.updatedAt).format("MMM Do YY")
                                     }
