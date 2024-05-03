@@ -18,18 +18,22 @@ import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
 import { CopyMoveDialog } from '../Dialog/CopyMoveDialog';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
 
 
 const RecentFolderCard = ({ data }) => {
     const dispatch = useDispatch()
+    const navigate = useNavigate();
+    const { user } = useSelector(state => state.user)
     const deleteFolder = async () => {
         try {
             const comfirm = window.confirm("Are you sure you want to delete this folder?")
             if (!comfirm) return
             const res = await api.delete(`/folder/${data?._id}`)
             toast.success("Folder deleted successfully")
-            dispatch(setReloaFolder(res.data))
-            dispatch(setReloadUser(res.data))
+            dispatch(setReloaFolder(res.status + 2))
+            dispatch(setReloadUser(res.status + 2))
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
         }
@@ -37,7 +41,7 @@ const RecentFolderCard = ({ data }) => {
     const [open, setOpen] = useState(false)
     const [copy, setCopy] = useState(false)
     const [mode, setMode] = useState("")
-    const navigate = useNavigate();
+
     const [openUpdate, setOpenUpdate] = useState(false)
 
     return (
@@ -67,87 +71,137 @@ const RecentFolderCard = ({ data }) => {
                     </h2>
                 </div>
 
-                <Dropdown
-                    menu={{
-                        items: [
-                            {
-                                label: <button
-                                    onClick={() => {
-                                        setCopy(true)
-                                        setMode("copy")
-                                    }}
-                                    className="text-primary w-[150px]">
-                                    <FontAwesomeIcon icon={faCopy}
-                                        className='mr-2'
-                                    />
-                                    Copy Folder
-                                </button>,
-                                key: '42',
-                            },
-                            {
-                                label: <button
-                                    onClick={() => {
-                                        setCopy(true)
-                                        setMode("move")
-                                    }}
-                                    className="text-primary w-[150px]">
-                                    <FontAwesomeIcon icon={faFolderOpen}
-                                        className='mr-2'
-                                    />
-                                    Move Folder
-                                </button>,
-                                key: '50',
-                            },
-                            {
-                                label: <button
-                                    onClick={() => setOpen(true)}
-                                    className="text-primary w-[150px]">
-                                    <FontAwesomeIcon icon={faDownload}
-                                        className='mr-2'
-                                    />
-                                    Dowload
-                                </button>,
-                                key: '0',
-                            },
-                            {
-                                label: <button
-                                    onClick={() => setOpenUpdate(true)}
-                                    className="text-primary w-[150px]">
-                                    <FontAwesomeIcon icon={faPen}
-                                        className='mr-2'
-                                    />
-                                    Edit
-                                </button>,
-                                key: '1',
-                            },
-                            {
-                                type: 'divider',
-                            },
-                            {
-                                label: <button
-                                    onClick={() => deleteFolder()}
-                                    className="text-error w-[150px]">
-                                    <FontAwesomeIcon icon={faTrashCan}
-                                        className='mr-2'
-                                    />
-                                    Delete
-                                </button>,
-                                key: '3',
-                            },
-                        ],
-                    }}
-                    trigger={['click']}
-                >
-                    <a onClick={(e) => e.preventDefault()}>
-                        <button
-                            tabIndex={0}
-                            role="button"
-                            className='hover:text-red-500'
-                        >
-                            <FontAwesomeIcon icon={faEllipsisV} width={20} />
-                        </button>
-                    </a>
-                </Dropdown>
+                <div>
+                    <Dropdown
+                        menu={{
+                            items: [
+                                {
+                                    label: <button
+                                        onClick={() => {
+                                            setCopy(true)
+                                            setMode("copy")
+                                        }}
+                                        className="text-primary w-[150px]">
+                                        <FontAwesomeIcon icon={faCopy}
+                                            className='mr-2'
+                                        />
+                                        Copy Folder
+                                    </button>,
+                                    key: '42',
+                                },
+                                {
+                                    label: <button
+                                        onClick={() => {
+                                            setCopy(true)
+                                            setMode("move")
+                                        }}
+                                        className="text-primary w-[150px]">
+                                        <FontAwesomeIcon icon={faFolderOpen}
+                                            className='mr-2'
+                                        />
+                                        Move Folder
+                                    </button>,
+                                    key: '50',
+                                },
+                                {
+                                    label: <button
+                                        onClick={() => setOpen(true)}
+                                        className="text-primary w-[150px]">
+                                        <FontAwesomeIcon icon={faDownload}
+                                            className='mr-2'
+                                        />
+                                        Dowload
+                                    </button>,
+                                    key: '0',
+                                },
+                                {
+                                    label: <button
+                                        onClick={() => setOpenUpdate(true)}
+                                        className="text-primary w-[150px]">
+                                        <FontAwesomeIcon icon={faPen}
+                                            className='mr-2'
+                                        />
+                                        Edit
+                                    </button>,
+                                    key: '1',
+                                },
+                                {
+                                    type: 'divider',
+                                },
+                                {
+                                    label: <button
+                                        onClick={() => deleteFolder()}
+                                        className="text-error w-[150px]">
+                                        <FontAwesomeIcon icon={faTrashCan}
+                                            className='mr-2'
+                                        />
+                                        Delete
+                                    </button>,
+                                    key: '3',
+                                },
+                            ],
+                        }}
+                        trigger={['click']}
+                    >
+                        <a onClick={(e) => e.preventDefault()}>
+                            <button
+                                tabIndex={0}
+                                role="button"
+                                className='hover:text-red-500'
+                            >
+                                <FontAwesomeIcon icon={faEllipsisV} width={20} />
+                            </button>
+                        </a>
+                    </Dropdown>
+                    <Dropdown
+                        placement='bottomLeft'
+                        menu={{
+                            items: [
+                                {
+                                    label: <div className='w-[200px]'>
+
+                                        <h1>
+                                            <span>
+                                                Owner
+                                            </span> : {
+                                                user?._id === data?.user?._id ? "You" : data?.user?.name
+                                            }
+                                        </h1>
+
+                                        <h1>
+                                            <span>
+                                                Size
+                                            </span> : {(data?.size).toFixed(2)} MB
+                                        </h1>
+                                        <h1>
+                                            <span>
+                                                Created At
+                                            </span> : {moment(data?.createdAt).format("DD/MM/YYYY")}
+                                        </h1>
+                                        <h1>
+                                            <span>
+                                                Updated At
+                                            </span> : {moment(data?.updatedAt).format("DD/MM/YYYY")}
+                                        </h1>
+                                    </div>,
+                                    key: '42',
+                                },
+                            ],
+                        }}
+                        trigger={['click']}
+                    >
+                        <a onClick={(e) => e.preventDefault()}>
+                            <button
+                                tabIndex={0}
+                                role="button"
+                                className='hover:text-red-500'
+                            >
+                                <FontAwesomeIcon icon={faCircleInfo} width={20} />
+                            </button>
+                        </a>
+                    </Dropdown>
+                </div>
+
             </div>
             <div className="flex items-center mt-2 text-blue-gray-700 gap-2">
                 <h5 className='text-sm font-normal'>

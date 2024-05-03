@@ -20,6 +20,8 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "../Loader";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faFolderOpen } from "@fortawesome/free-regular-svg-icons";
+import { setReloaFolder } from "../../redux/Slice/reloadSlice";
 
 export function CopyMoveDialog({ open, setOpen, folder, mode }) {
     const handleOpen = () => setOpen(!open);
@@ -32,22 +34,47 @@ export function CopyMoveDialog({ open, setOpen, folder, mode }) {
         },
     });
     const handler = async () => {
-        if (mode === "copy") {
-            const newFolder = {
-                name: folder?.name,
-                parent: selected?._id
-            }
-            await api.post("/folder/copy", newFolder);
-            setOpen(false)
-            toast.success("Folder Copied successfully");
+        try {
+            if (mode === "copy") {
+                if (selected?.parent === "root") {
+                    const newFolder = {
+                        name: folder?.name,
+                        code: folder?.code,
+                        user: user?._id
+                    }
+                    await api.post("/folder/create", newFolder);
+                }
+                else {
+                    const newFolder = {
+                        name: folder?.name,
+                        code: folder?.code,
+                        parent: selected?._id,
+                        user: user?._id
+                    }
+                    await api.post("/folder/create", newFolder);
+                }
+                setOpen(false)
+                toast.success("Folder Copied successfully");
 
-        } else {
-            await api.post("/folder/move", {
-                _id: folder?._id,
-                parent: selected?._id
-            });
-            setOpen(false)
-            toast.success("Folder Moved successfully");
+            } else {
+                if (selected?.parent === "root") {
+                    await api.post("/folder/move", {
+                        _id: folder?._id,
+                        parent: "root"
+                    });
+                }
+                else {
+                    await api.post("/folder/move", {
+                        _id: folder?._id,
+                        parent: selected?._id
+                    });
+                }
+                setOpen(false)
+                toast.success("Folder Moved successfully");
+            }
+            setReloaFolder(Math.random())
+        } catch (error) {
+            toast.error(error?.response?.data?.message || error.message || "Something went wrong")
         }
     }
     const [selected, setSelected] = useState({});
@@ -71,37 +98,57 @@ export function CopyMoveDialog({ open, setOpen, folder, mode }) {
                     <div className="mt-1  max-h-[500px] overflow-y-auto">
                         <ul>
                             {
-                                folders?.data?.map((item) => (
-                                    <li key={item._id}
-                                        className="mt-2 cursor-pointer"
-                                        onClick={() => setSelected(item)}
-                                    >
-                                        <div className={`flex items-center gap-4 hover:bg-blue-gray-50 ${selected?._id === item?._id ? "bg-primary hover:bg-primary text-white" : ""} py-1 px-2`}>
-                                            <span className="text-lg">
-                                                <FontAwesomeIcon icon={faFolder} />
-                                            </span>
-                                            <h2 className="text-sm">
-                                                {
-                                                    item?.parent ? <>
-                                                        {
+                                folder?.parent && <li
+                                    className="mt-2 cursor-pointer"
+                                    onClick={() => setSelected({ parent: "root", _id: "" })}
+                                >
+                                    <div className={`flex items-center gap-4 hover:bg-blue-gray-50 ${selected?.parent === "root" ? "bg-primary hover:bg-primary text-white" : ""} py-1 px-2`}>
+                                        <span className="text-lg">
+                                            <FontAwesomeIcon icon={faFolderOpen} />
+                                        </span>
+                                        <h2 className="text-sm">
+                                            Root
+                                        </h2>
+                                    </div>
+                                </li>
+                            }
+                            {
+                                folders?.data?.length > 0 ?
+                                    (folders?.data?.filter((item) => item?._id !== folder?.parent))?.map((item) => (
+                                        <li key={item._id}
+                                            className="mt-2 cursor-pointer"
+                                            onClick={() => setSelected(item)}
+                                        >
+                                            <div className={`flex items-center gap-4 hover:bg-blue-gray-50 ${selected?._id === item?._id ? "bg-primary hover:bg-primary text-white" : ""} py-1 px-2`}>
+                                                <span className="text-lg">
+                                                    <FontAwesomeIcon icon={faFolder} />
+                                                </span>
+                                                <h2 className="text-sm">
+                                                    {
+                                                        item?.parent ? <>
+                                                            {
+                                                                item.name
+                                                            }
+                                                            <span className="text-xs px-2">
+                                                                <FontAwesomeIcon
+                                                                    icon={faChevronRight}
+                                                                />
+                                                            </span>
+                                                            {
+                                                                item?.parent?.name
+                                                            }
+                                                        </>
+                                                            :
                                                             item.name
-                                                        }
-                                                        <span className="text-xs px-2">
-                                                            <FontAwesomeIcon
-                                                                icon={faChevronRight}
-                                                            />
-                                                        </span>
-                                                        {
-                                                            item?.parent?.name
-                                                        }
-                                                    </>
-                                                        :
-                                                        item.name
-                                                }
-                                            </h2>
-                                        </div>
+                                                    }
+                                                </h2>
+                                            </div>
+                                        </li>
+                                    ))
+                                    :
+                                    <li>
+                                        <h1 className="text-lg text-primary mt-1">No Folder</h1>
                                     </li>
-                                ))
                             }
 
                         </ul>
