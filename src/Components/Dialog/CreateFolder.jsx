@@ -44,6 +44,7 @@ export function CreateFolder({ open, setOpen }) {
             dispatch(setReloaFolder(res.data))
             toast.success("Folder created successfully")
             setError("")
+            setName("")
         } catch (error) {
             toast.error(error?.response?.data?.message || error.message || "Something went wrong")
             setError(error?.response?.data?.message || error.message || "Something went wrong")

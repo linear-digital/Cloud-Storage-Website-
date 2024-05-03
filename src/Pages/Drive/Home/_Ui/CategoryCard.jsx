@@ -20,7 +20,7 @@ const CategoryCard = ({ icon, }) => {
     return (
         <div className='cursor-pointer ' onClick={onclick}>
             <div
-                className='flex items-center justify-center p-5 h-[120px] lg:w-[200px] w-[160px] hover:shadow-md rounded-lg shadow shadow-gray-300 relative'
+                className='flex items-center justify-center p-5 h-[120px] lg:w-[200px]  w-[160px] hover:shadow-md rounded-lg shadow shadow-gray-300 relative'
                 style={{
                     backgroundColor: icon.bg || "white"
                 }}

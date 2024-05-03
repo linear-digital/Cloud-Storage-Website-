@@ -12,6 +12,12 @@ import { setReloaFolder, setReloadUser } from '../../redux/Slice/reloadSlice';
 import { DownloadFolderDialog } from '../Dialog/DownloadFolderDialog';
 import { Dropdown } from 'antd';
 import { UpdateFolder } from '../Dialog/UpdateFolder';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
+import { faFolderOpen } from '@fortawesome/free-regular-svg-icons';
+import { CopyMoveDialog } from '../Dialog/CopyMoveDialog';
 
 
 const RecentFolderCard = ({ data }) => {
@@ -29,18 +35,28 @@ const RecentFolderCard = ({ data }) => {
         }
     }
     const [open, setOpen] = useState(false)
+    const [copy, setCopy] = useState(false)
+    const [mode, setMode] = useState("")
     const navigate = useNavigate();
     const [openUpdate, setOpenUpdate] = useState(false)
 
     return (
-        <div className='p-5 bg-white rounded w-full hover:shadow-xl shadow-blue-100 cursor-pointer'
+        <div className='p-5 bg-white rounded w-full hover:shadow-xl shadow-blue-100 cursor-pointer min-w-full'
             onDoubleClick={() => navigate(`/drive/folders?folder=${data?._id}`)}
         >
+            {
+                copy && <CopyMoveDialog
+                    open={copy}
+                    setOpen={setCopy}
+                    folder={data}
+                    mode={mode}
+                />
+            }
             {
                 open && <DownloadFolderDialog open={open} setOpen={setOpen} folder={data} />
             }
             {
-                openUpdate && <UpdateFolder open={openUpdate} setOpen={setOpenUpdate} folder={data}/>
+                openUpdate && <UpdateFolder open={openUpdate} setOpen={setOpenUpdate} folder={data} />
             }
 
             <div className="flex justify-between items-center">
@@ -50,20 +66,58 @@ const RecentFolderCard = ({ data }) => {
                         {data?.name}
                     </h2>
                 </div>
-              
+
                 <Dropdown
                     menu={{
                         items: [
                             {
                                 label: <button
+                                    onClick={() => {
+                                        setCopy(true)
+                                        setMode("copy")
+                                    }}
+                                    className="text-primary w-[150px]">
+                                    <FontAwesomeIcon icon={faCopy}
+                                        className='mr-2'
+                                    />
+                                    Copy Folder
+                                </button>,
+                                key: '42',
+                            },
+                            {
+                                label: <button
+                                    onClick={() => {
+                                        setCopy(true)
+                                        setMode("move")
+                                    }}
+                                    className="text-primary w-[150px]">
+                                    <FontAwesomeIcon icon={faFolderOpen}
+                                        className='mr-2'
+                                    />
+                                    Move Folder
+                                </button>,
+                                key: '50',
+                            },
+                            {
+                                label: <button
                                     onClick={() => setOpen(true)}
-                                    className="text-primary w-[150px]">Dowload</button>,
+                                    className="text-primary w-[150px]">
+                                    <FontAwesomeIcon icon={faDownload}
+                                        className='mr-2'
+                                    />
+                                    Dowload
+                                </button>,
                                 key: '0',
                             },
                             {
                                 label: <button
-                                onClick={() => setOpenUpdate(true)}
-                                className="text-primary w-[150px]">Edit</button>,
+                                    onClick={() => setOpenUpdate(true)}
+                                    className="text-primary w-[150px]">
+                                    <FontAwesomeIcon icon={faPen}
+                                        className='mr-2'
+                                    />
+                                    Edit
+                                </button>,
                                 key: '1',
                             },
                             {
@@ -72,7 +126,12 @@ const RecentFolderCard = ({ data }) => {
                             {
                                 label: <button
                                     onClick={() => deleteFolder()}
-                                    className="text-error w-[150px]">Delete</button>,
+                                    className="text-error w-[150px]">
+                                    <FontAwesomeIcon icon={faTrashCan}
+                                        className='mr-2'
+                                    />
+                                    Delete
+                                </button>,
                                 key: '3',
                             },
                         ],
