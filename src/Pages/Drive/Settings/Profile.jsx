@@ -41,7 +41,7 @@ const Profile = () => {
         const formData = new FormData()
         formData.append("file", file)
         try {
-            const res = await fetch('http://localhost:4500/api/file/single', {
+            const res = await fetch('https://temp.mdtamiz.com/api/file/single', {
                 method: "POST",
                 headers: {
                     userid: user?._id,

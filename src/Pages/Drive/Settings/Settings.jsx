@@ -28,7 +28,7 @@ const Settings = () => {
                     }
                 </div>
 
-                <section className='w-full bg-white mt-5 p-5'>
+                <section className='w-full bg-white mt-5 lg:p-5'>
                     <Outlet />
                 </section>
             </div>
