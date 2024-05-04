@@ -155,7 +155,7 @@ const Files = ({ mode }) => {
                 mode !== "shared" &&
                 <h1 className='text-xl font-semibold'>{
                     category ? <span className='capitalize'>
-                        {name} (${files?.data?.length || 0})
+                        {name} ({files?.data?.length || 0})
                     </span> : `All FIles (${files?.data?.length || 0})`
                 }</h1>}
             {
